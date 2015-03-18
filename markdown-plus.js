@@ -1,11 +1,30 @@
-String.prototype.repeat = function(i) {
+String.prototype.repeat = function(i) { // Some browsers don't support this, for example, Safari
     return new Array(i + 1).join(this);
 }
 
+mermaid.ganttConfig = { // Configuration for Gantt diagrams
+  numberSectionStyles:4,
+  axisFormatter: [
+      ["%I:%M", function (d) { // Within a day
+          return d.getHours();
+      }],
+      ["w. %U", function (d) { // Monday a week
+          return d.getDay() == 1;
+      }],
+      ["%a %d", function (d) { // Day within a week (not monday)
+          return d.getDay() && d.getDate() != 1;
+      }],
+      ["%b %d", function (d) { // within a month
+          return d.getDate() != 1;
+      }],
+      ["%m-%y", function (d) { // Month
+          return d.getMonth();
+      }]
+  ]
+};
+
 var editor;
-
 $(document).ready(function() {
-
   $.getJSON('bower.json', function(json) {
     $('#version-string').html(json.version); // 从 bower.json 读取版本号
   });
@@ -93,7 +112,7 @@ $(document).ready(function() {
         }
       });
       return tex;
-    } else if(firstLine === 'sequenceDiagram' || firstLine.match(/^graph (?:TB|BT|RL|LR|TD);?$/)) {
+    } else if(firstLine === 'gantt' || firstLine === 'sequenceDiagram' || firstLine.match(/^graph (?:TB|BT|RL|LR|TD);?$/)) {
       if(firstLine === 'sequenceDiagram') {
         code += '\n'; // 如果末尾没有空行，则语法错误
       }
@@ -122,7 +141,7 @@ $(document).ready(function() {
     lazy_change();
   });
 
-  var lazy_change = _.debounce(function() { // 用户停止输入256毫秒之后才会触发
+  var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
     $('.markdown-body').empty().append(marked(editor.session.getValue())); // 实时预览
     $('pre').addClass('prettyprint').addClass('linenums');
     prettyPrint(); // 语法高亮
@@ -130,7 +149,7 @@ $(document).ready(function() {
       $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
     });
     mermaid.init(); // 生成流程图，顺序图等
-  }, 256, false);
+  }, 128, false);
 
   // h1 - h6 heading
   $('.heading-icon').click(function() {
@@ -284,19 +303,10 @@ $(document).ready(function() {
     editor.focus();
   });
 
-  $('#flow-icon').click(function(){
+  $('.mermaid-icon').click(function(){
     var text = editor.session.getTextRange(editor.selection.getRange()).trim();
     if(text.length == 0) {
-      text = 'graph LR\nA-->B';
-    }
-    editor.insert('\n```\n' + text + '\n```\n');
-    editor.focus();
-  });
-
-  $('#seq-icon').click(function(){
-    var text = editor.session.getTextRange(editor.selection.getRange()).trim();
-    if(text.length == 0) {
-      text = 'sequenceDiagram\nA->>B: How are you?\nB->>A: Great!';
+      text = $(this).data('sample');
     }
     editor.insert('\n```\n' + text + '\n```\n');
     editor.focus();
@@ -306,5 +316,4 @@ $(document).ready(function() {
   $(document).on('close', '.remodal', function(e) {
     editor.focus(); // 关闭modal，编辑器自动获得焦点
   });
-
 });
