@@ -1,0 +1,32 @@
+{
+  "name": "emoji-icons",
+  "version": "1.0.0",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "Emoji icons from emoji-cheat-sheet.com",
+  "main": "README.md",
+  "keywords": [
+    "emoji"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/tylerlong/emoji-icons",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "README.md",
+    "fabfile.py"
+  ],
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "245a8a9e6aa4aca19d8843ccda812f6392bb8d1f"
+  },
+  "_source": "git://github.com/tylerlong/emoji-icons.git",
+  "_target": "*",
+  "_originalSource": "emoji-icons"
+}

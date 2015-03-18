@@ -1,0 +1,32 @@
+{
+  "name": "underscore-min",
+  "version": "1.8.2",
+  "homepage": "https://github.com/tylerlong/underscore-min",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "underscore-min.js",
+  "main": "underscore-min.js",
+  "keywords": [
+    "underscore"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "README.md",
+    "fabfile.py"
+  ],
+  "_release": "1.8.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.8.2",
+    "commit": "a8466a1df52ee9c69a7f524819d69bf5f31124a6"
+  },
+  "_source": "git://github.com/tylerlong/underscore-min.git",
+  "_target": "*",
+  "_originalSource": "underscore-min"
+}

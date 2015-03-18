@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Markdown Plus</title>
+    <link rel="stylesheet" href="bower_components/jquery-ui-layout-min/layout-default.css"/>
+    <link rel="stylesheet" href="bower_components/github-markdown-css/github-markdown.css"/>
+    <link rel="stylesheet" href="bower_components/prettify-min/prettify.min.css"/>
+    <link rel="stylesheet" href="bower_components/font-awesome-min/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bower_components/remodal-min/jquery.remodal.css"/>
+    <link rel="stylesheet" href="bower_components/katex-build/katex.min.css"/>
+    <link rel="stylesheet" href="bower_components/ionicons-min/css/ionicons.min.css"/>
+    <link rel="stylesheet" href="markdown-plus.css"/>
+    <script src="bower_components/underscore-min/underscore-min.js"></script>
+    <script src="bower_components/jquery-dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui-min/jquery-ui.min.js"></script>
+    <script src="bower_components/jquery-ui-layout-min/jquery.layout.min.js"></script>
+    <script src="bower_components/ace-min-noconflict/ace.js" charset="utf-8"></script>
+    <script src="bower_components/marked-min/marked.min.js"></script>
+    <script src="bower_components/prettify-min/prettify.min.js"></script>
+    <script src="bower_components/remodal-min/jquery.remodal.min.js"></script>
+    <script src="bower_components/katex-build/katex.min.js"></script>
+    <script src="bower_components/mermaid/dist/mermaid.full.min.js"></script>
+    <script src="markdown-plus.js"></script>
+  </head>
+  <body>
+    <div class="ui-layout-north">
+      <div id="toolbar" class="noselect"> <!-- 工具栏 -->
+        <i title="Bold" class="fa fa-bold styling-icon" data-modifier="**"></i>
+        <i title="Italic" class="fa fa-italic styling-icon" data-modifier="*"></i>
+        <i title="Strikethrough" class="fa fa-strikethrough styling-icon" data-modifier="~~"></i>
+        <i class="dividor">|</i>
+        <i title="Heading 1" class="fa heading-icon" data-level="1">h1</i>
+        <i title="Heading 2" class="fa heading-icon" data-level="2">h2</i>
+        <i title="Heading 3" class="fa heading-icon" data-level="3">h3</i>
+        <i title="Heading 4" class="fa heading-icon" data-level="4">h4</i>
+        <i title="Heading 5" class="fa heading-icon" data-level="5">h5</i>
+        <i title="Heading 6" class="fa heading-icon" data-level="6">h6</i>
+        <i class="dividor">|</i>
+        <i title="Horizontal rule" id="horizontal-rule" class="fa fa-minus"></i>
+        <i title="Quote" class="fa fa-quote-left list-icon" data-prefix="> "></i>
+        <i title="Unordered list" class="fa fa-list-ul list-icon" data-prefix="- "></i>
+        <i title="Ordered list" class="fa fa-list-ol list-icon" data-prefix="1. "></i>
+        <i title="Incomplete task list" class="fa fa-square-o list-icon" data-prefix="- [ ] "></i>
+        <i title="Complete task list" class="fa fa-check-square-o list-icon" data-prefix="- [x] "></i>
+        <i class="dividor">|</i>
+        <i title="Link" class="fa fa-link" id="link-icon"></i>
+        <i title="Image" class="fa fa-image" id="image-icon"></i>
+        <i title="Code" class="fa fa-code" id="code-icon"></i>
+        <i title="Table" class="fa fa-table" id="table-icon"></i>
+        <i class="dividor">|</i>
+        <i title="Emoji" class="fa fa-smile-o" data-remodal-target="emoji-modal"></i>
+        <i title="Font Awesome" class="fa fa-flag-o" data-remodal-target="fa-modal"></i>
+        <i title="Ionicons" class="icon ion-ionic" data-remodal-target="ion-modal"></i>
+        <i class="dividor">|</i>
+        <i title="Mathematical formulae" class="fa fa-superscript" id="math-icon"></i>
+        <i title="Flowchart" class="fa fa-long-arrow-right" id="flow-icon"></i>
+        <i title="Sequence diagram" class="fa fa-exchange" id="seq-icon"></i>
+        <i class="dividor">|</i>
+        <i title="Help" class="fa fa-question-circle" id="help-icon" data-remodal-target="help-modal"></i>
+        <i title="About" class="fa fa-info-circle" id="about-icon" data-remodal-target="about-modal"></i>
+      </div>
+    </div>
+    <div class="ui-layout-center">
+      <div id="editor"></div> <!-- 编辑器 -->
+      <div class="remodal" id="emoji-modal" data-remodal-id="emoji-modal"> <!-- emoji 弹出框 -->
+        <h2>Please enter an emoji code:</h2>
+        <p>Examples: "smile", "whale", "santa", "panda_face", "dog", "truck" ...</p>
+        <p>For a complete list, please check <a href="http://www.emoji-cheat-sheet.com/" target="_blank">Emoji Cheat Sheet</a>.</p>
+        <p><input id="emoji-code" placeholder="smile"/></p>
+        <br/><a class="remodal-cancel">Cancel</a>
+        <a class="remodal-confirm" id="emoji-confirm">OK</a>
+      </div>
+      <div class="remodal" id="fa-modal" data-remodal-id="fa-modal"> <!-- Font Awesome 弹出框 -->
+        <h2>Please enter a Font Awesome code:</h2>
+        <p>Examples: "cloud", "flag", "car", "truck", "heart", "dollar" ...</p>
+        <p>For a complete list, please check <a href="http://fontawesome.io/icons/" target="_blank">Font Awesome Icons</a>.</p>
+        <p><input id="fa-code" placeholder="heart"/></p>
+        <br/><a class="remodal-cancel">Cancel</a>
+        <a class="remodal-confirm" id="fa-confirm">OK</a>
+      </div>
+      <div class="remodal" id="ion-modal" data-remodal-id="ion-modal"> <!-- Ionicons 弹出框 -->
+        <h2>Please enter an Ionicons code:</h2>
+        <p>Examples: "beer", "key", "locked", "location", "plane", "ios-eye" ...</p>
+        <p>For a complete list, please check <a href="http://ionicons.com/" target="_blank">Ionicons Website</a>.</p>
+        <p><input id="ion-code" placeholder="beer"/></p>
+        <br/><a class="remodal-cancel">Cancel</a>
+        <a class="remodal-confirm" id="ion-confirm">OK</a>
+      </div>
+      <div class="remodal" data-remodal-id="help-modal"> <!-- help 弹出框 -->
+        <img src="icon.png" width="64"/>
+        <h2>Markdown Plus help</h2>
+        <p><a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank">Keyboard Shortcuts</a></p>
+        <p><a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown Basics</a></p>
+        <p><a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">GitHub Flavored Markdown</a></p>
+        <p><a href="http://www.emoji-cheat-sheet.com/" target="_blank">Emoji Cheat Sheet</a></p>
+        <p><a href="http://fontawesome.io/icons/" target="_blank">Font Awesome Icons</a></p>
+        <p><a href="http://ionicons.com/" target="_blank">Ionicons Website</a></p>
+        <p><a href="http://meta.wikimedia.org/wiki/Help:Displaying_a_formula" target="_blank">Mathematical Formulae</a></p>
+        <p><a href="http://knsv.github.io/mermaid/flowchart.html" target="_blank">Flowchart Syntax</a></p>
+        <p><a href="http://knsv.github.io/mermaid/sequenceDiagram.html" target="_blank">Sequence Diagram Syntax</a></p>
+        <br/><a class="remodal-confirm">OK</a>
+      </div>
+      <div class="remodal" data-remodal-id="about-modal"> <!-- about 弹出框 -->
+        <img src="icon.png" width="64"/>
+        <h2>Markdown Plus</h2> Version <span id="version-string"></span>
+        <p>Markdown editor with extra features.</p>
+        <p>Copyright (c) 2015 Tylingsoft</p>
+        <p>Home page: <a href="https://github.com/tylingsoft/markdown-plus" target="_blank">https://github.com/tylingsoft/markdown-plus</a></p>
+        <br/><a class="remodal-confirm">OK</a>
+      </div>
+    </div>
+    <div class="ui-layout-east">
+      <article class="markdown-body"></article> <!-- 实时预览 -->
+    </div>
+  </body>
+</html>

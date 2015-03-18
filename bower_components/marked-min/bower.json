@@ -1,0 +1,23 @@
+{
+  "name": "marked-min",
+  "version": "0.3.3",
+  "homepage": "https://github.com/tylerlong/marked-min",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "marked.min.js",
+  "main": "marked.min.js",
+  "keywords": [
+    "marked"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "README.md",
+    "fabfile.py"
+  ]
+}

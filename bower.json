@@ -1,0 +1,28 @@
+{
+  "name": "markdown-plus-demo",
+  "version": "1.0.0",
+  "homepage": "https://github.com/tylingsoft/markdown-plus-demo",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "Online demo for tylingsoft/markdown-plus",
+  "main": "index.html",
+  "keywords": [
+    "markdown-plus",
+    "markdown plus",
+    "markdown editor",
+    "markdown"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "markdown-plus": null
+  }
+}

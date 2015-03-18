@@ -1,0 +1,23 @@
+{
+  "name": "prettify-min",
+  "version": "1.0.4",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "Minimal files of [tcollard/google-code-prettify]",
+  "main": "prettify.min.js",
+  "keywords": [
+    "prettify"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/tylerlong/prettify-min",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "README.md",
+    "fabfile.py"
+  ]
+}
