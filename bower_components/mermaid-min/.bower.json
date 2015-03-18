@@ -1,0 +1,32 @@
+{
+  "name": "mermaid-min",
+  "version": "0.4.0",
+  "homepage": "https://github.com/tylerlong/mermaid-min",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "knsv/mermaid minimized files.",
+  "main": "mermaid.full.min.js",
+  "keywords": [
+    "mermaid"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "README.md",
+    "fabfile.py"
+  ],
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.4.0",
+    "commit": "5ec65d7f8eabfb8bc252653308fd0dc81b819fca"
+  },
+  "_source": "git://github.com/tylerlong/mermaid-min.git",
+  "_target": "*",
+  "_originalSource": "mermaid-min"
+}
