@@ -18,14 +18,14 @@
     "bower_components",
     "test",
     "tests",
-    "READMR.md",
+    "README.md",
     "fabfile.py"
   ],
   "_release": "4.3.0",
   "_resolution": {
     "type": "version",
     "tag": "v4.3.0",
-    "commit": "92160ee6b25741ef5ee5bb078b461049c26c2a3b"
+    "commit": "613d1f9284ba19d0f69ca87c59126a38a2d8c62d"
   },
   "_source": "git://github.com/tylerlong/font-awesome-min.git",
   "_target": "*",
