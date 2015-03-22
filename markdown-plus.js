@@ -25,8 +25,7 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
 
 var editor;
 $(document).ready(function() {
-  // 构造上中右三个面板
-  $('body').layout({
+  $('body').layout({ // create 3-panels layout
     resizerDblClickToggle: false,
     resizable: false,
     slidable: false,
@@ -34,13 +33,13 @@ $(document).ready(function() {
     togglerLength_closed: '100%',
     north: {
       size: 'auto',
-      togglerTip_open: 'Hide Toolbar',
-      togglerTip_closed: 'Show Toolbar'
+      togglerTip_open: $('#toolbar').data('open-title'),
+      togglerTip_closed: $('#toolbar').data('closed-title')
     },
     east: {
       size: '50%',
-      togglerTip_open: 'Hide Preview',
-      togglerTip_closed: 'Show Preview'
+      togglerTip_open: $('#preview').data('open-title'),
+      togglerTip_closed: $('#preview').data('closed-title')
     },
     center: {
       onresize: function() {
@@ -203,103 +202,70 @@ $(document).ready(function() {
     editor.focus();
   });
 
+  // todo: link 和 image 采用 modal 的方式让用户输入
   $('#link-icon').click(function() {
     var range = editor.selection.smartRange();
     var text = editor.session.getTextRange(range);
     if(text.trim().length == 0) {
-      text = 'link description';
+      text = $(this).data('sample-text');
     }
-    editor.session.replace(range, '[' + text +'](http://example.com/ "optional title")');
+    var url = $(this).data('sample-url');
+    editor.session.replace(range, '[' + text + '](' + url + ')');
     editor.focus();
   });
 
   $('#image-icon').click(function() {
     var text = editor.session.getTextRange(editor.selection.getRange()).trim();
     if(text.length == 0) {
-      text = 'image description';
+      text = $(this).data('sample-text');
     }
-    editor.insert('![' + text + '](http://example.com/example.png)');
+    var url = $(this).data('sample-url')
+    editor.insert('![' + text + '](' + url + ')');
     editor.focus();
   });
 
   $('#code-icon').click(function() {
     var text = editor.session.getTextRange(editor.selection.getRange()).trim();
     if(text.length == 0) {
-      text = 'enter code here';
+      text = $(this).data('sample');
     }
     editor.insert('\n```\n' + text + '\n```\n');
     editor.focus();
   });
 
   $('#table-icon').click(function() {
-    var tableTemplate = 'header 1 | header 2\n---|---\nrow 1 col 1 | row 1 col 2\nrow 2 col 1 | row 2 col 2';
+    var sample = $(this).data('sample');
     editor.insert(''); // 删除选中的部分
     var p = editor.getCursorPosition();
     if(p.column == 0) { // 光标在行首
       editor.selection.clearSelection();
-      editor.insert('\n' + tableTemplate + '\n\n');
+      editor.insert('\n' + sample + '\n\n');
     } else {
       editor.navigateTo(editor.getSelectionRange().start.row, Number.MAX_VALUE);
-      editor.insert('\n\n' + tableTemplate + '\n');
+      editor.insert('\n\n' + sample + '\n');
     }
     editor.focus();
   });
 
   // emoji icon
-  $(document).on('opened', '#emoji-modal', function() {
-    $('#emoji-code').focus();
-  });
-  $('#emoji-code').keyup(function(e) {
-   if(e.which == 13) { // 回车键确认
-      $('#emoji-confirm').click();
-    }
-  });
-  $(document).on('confirm', '#emoji-modal', function() {
-    var emoji_code = $('#emoji-code').val().trim();
-    if(emoji_code.length > 0) {
-      editor.insert('<img src="emoji/' + emoji_code + '" width="18"/>');
-      $('#emoji-code').val('');
-    }
+  prompt_for_a_value('emoji', function(value){
+    editor.insert('<img src="emoji/' + value + '" width="18"/>');
   });
 
   // Font Awesome icon
-  $(document).on('opened', '#fa-modal', function() {
-    $('#fa-code').focus();
-  });
-  $('#fa-code').keyup(function(e) {
-   if(e.which == 13) { // 回车键确认
-      $('#fa-confirm').click();
-    }
-  });
-  $(document).on('confirm', '#fa-modal', function() {
-    var fa_code = $('#fa-code').val().trim();
-    if(fa_code.length > 0) {
-      editor.insert('<i class="fa fa-' + fa_code + '"/>');
-      $('#fa-code').val('');
-    }
+  prompt_for_a_value('fa', function(value){
+    editor.insert('<i class="fa fa-' + value + '"/>');
   });
 
   // Ionicons icon
-  $(document).on('opened', '#ion-modal', function() {
-    $('#ion-code').focus();
-  });
-  $('#ion-code').keyup(function(e) {
-   if(e.which == 13) { // 回车键确认
-      $('#ion-confirm').click();
-    }
-  });
-  $(document).on('confirm', '#ion-modal', function() {
-    var ion_code = $('#ion-code').val().trim();
-    if(ion_code.length > 0) {
-      editor.insert('<i class="icon ion-' + ion_code + '"/>');
-      $('#ion-code').val('');
-    }
+  prompt_for_a_value('ion', function(value){
+    editor.insert('<i class="icon ion-' + value + '"/>');
   });
 
   $('#math-icon').click(function(){
     var text = editor.session.getTextRange(editor.selection.getRange()).trim();
     if(text.length == 0) {
-      text = 'E = mc^2';
+      text = $(this).data('sample');;
     }
     editor.insert('\n```math\n' + text + '\n```\n');
     editor.focus();
@@ -319,3 +285,21 @@ $(document).ready(function() {
     editor.focus(); // 关闭modal，编辑器自动获得焦点
   });
 });
+
+function prompt_for_a_value(key, action) {
+  $(document).on('opened', '#' + key + '-modal', function() {
+    $('#' + key + '-code').focus();
+  });
+  $('#' + key + '-code').keyup(function(e) {
+   if(e.which == 13) { // 回车键确认
+      $('#' + key + '-confirm').click();
+    }
+  });
+  $(document).on('confirm', '#' + key + '-modal', function() {
+    var value = $('#' + key + '-code').val().trim();
+    if(value.length > 0) {
+      action(value);
+      $('#' + key + '-code').val('');
+    }
+  });
+}
