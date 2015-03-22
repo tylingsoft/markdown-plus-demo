@@ -59,6 +59,13 @@ $(document).ready(function() {
   editor.setFontSize('14px');
   editor.focus();
 
+  // synchronize scrolling
+  editor.session.on('changeScrollTop', function(scroll) {
+    var percentage = scroll / (editor.session.getScreenLength() * editor.renderer.lineHeight - $('#editor').height());
+    var scrollTop = ($('.ui-layout-east article').outerHeight() - $('.ui-layout-east').height()) * percentage;
+    $('.ui-layout-east').scrollTop(scrollTop);
+  });
+
   // 编辑器的一些拓展方法
   editor.selection.smartRange = function() {
     var range = editor.selection.getRange();
