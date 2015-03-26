@@ -73,24 +73,21 @@ i.dividor { /* toolbar 上面的分隔竖线 */
   user-select: none;
 }
 
-/* source code highlight from GitHub*/
-.kwd { /* 关键字 */
-  color: #a71d5d !important;
+/* source code highlight */
+.markdown-body .ace-tomorrow {
+  background-color: #f7f7f7 !important;
 }
-.str { /* 字符串 */
-  color: #183691 !important;
+.markdown-body .ace-tomorrow .ace_static_highlight {
+  font-size: 13.6px !important;
 }
-.com { /* 注释 */
-  color: #969896 !important;
-}
-pre.prettyprint {
-  border: none !important;
-  padding: 16px !important;
+.markdown-body .ace-tomorrow .ace_gutter {
+  color: #aaaaaa !important;
+  margin-right: 16px !important;
 }
 
-
+/*************************/
 /* below is for printing */
-
+/*************************/
 
 @media print {
   .ui-layout-pane-north, .ui-layout-pane-center .ui-layout-resizer, .ui-layout-toggler {

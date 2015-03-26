@@ -63,7 +63,8 @@ $(document).ready(function() {
   editor = ace.edit("editor");
   editor.$blockScrolling = Infinity;
   editor.renderer.setShowPrintMargin(false);
-  editor.session.setMode("ace/mode/markdown");
+  editor.session.setMode('ace/mode/markdown');
+  editor.setTheme('ace/theme/tomorrow');
   editor.session.setUseWrapMode(true);
   editor.setFontSize('14px');
   editor.focus();
@@ -147,11 +148,23 @@ $(document).ready(function() {
   editor.session.on('change', function() {
     lazy_change();
   });
-
+  var modelist = ace.require('ace/ext/modelist').modesByName;
+  var highlight = ace.require('ace/ext/static_highlight');
   var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
-    $('.markdown-body').empty().append(marked(editor.session.getValue())); // 实时预览
-    $('pre').addClass('prettyprint');
-    prettyPrint(); // 语法高亮
+    $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
+    $('code').each(function(){ // code highlight
+      var language = ($(this).attr('class') || 'lang-c_cpp').substring(5).toLowerCase();
+      if(modelist[language] == undefined) {
+        language = 'c_cpp';
+      }
+      highlight($(this)[0], {
+          mode: 'ace/mode/' + language,
+          theme: 'ace/theme/tomorrow',
+          startLineNumber: 1,
+          showGutter: true,
+          trim: true,
+      }, function (highlighted) {});
+    });
     $('img[src^="emoji/"]').each(function() { // 转换emoji路径
       $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
     });
