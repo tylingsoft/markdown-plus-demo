@@ -16,9 +16,11 @@
     <script src="bower_components/jquery-dist/jquery.min.js"></script>
     <script src="bower_components/jquery-ui-min/jquery-ui.min.js"></script>
     <script src="bower_components/jquery-ui-layout-min/jquery.layout.min.js"></script>
+    <script src="bower_components/jquery.cookie-min/jquery.cookie.js"></script>
     <script src="bower_components/ace-min-noconflict/ace.js" charset="utf-8"></script>
     <script src="bower_components/ace-min-noconflict/ext-static_highlight.js"></script>
     <script src="bower_components/ace-min-noconflict/ext-modelist.js"></script>
+    <script src="bower_components/ace-min-noconflict/keybinding-vim.js"></script>
     <script src="bower_components/marked-min/marked.min.js"></script>
     <script src="bower_components/remodal-min/jquery.remodal.min.js"></script>
     <script src="bower_components/katex-build/katex.min.js"></script>
@@ -29,6 +31,11 @@
   <body>
     <div class="ui-layout-north">
       <div id="toolbar" class="noselect" data-open-title="隐藏工具栏" data-closed-title="显示工具栏"> <!-- 工具栏 -->
+        <i title="新建" class="fa fa-file-text-o file-icon app-only" data-name="new"></i>
+        <i title="打开" class="fa fa-folder-open-o file-icon app-only" data-name="open"></i>
+        <i title="保存" class="fa fa-save file-icon app-only" data-name="save"></i>
+        <i title="导出为 PDF" class="fa fa-file-pdf-o file-icon app-only" data-name="pdf"></i>
+        <i class="dividor app-only">|</i>
         <i title="粗体" class="fa fa-bold styling-icon" data-modifier="**"></i>
         <i title="斜体" class="fa fa-italic styling-icon" data-modifier="*"></i>
         <i title="删除线" class="fa fa-strikethrough styling-icon" data-modifier="~~"></i>
@@ -74,8 +81,9 @@ T2: 2014-01-11, 9d
 section S3
 T3: 2014-01-02, 9d"></i>
         <i class="dividor">|</i>
-        <i title="帮助" class="fa fa-question-circle" id="help-icon" data-remodal-target="help-modal"></i>
-        <i title="关于" class="fa fa-info-circle" id="about-icon" data-remodal-target="about-modal"></i>
+        <i title="首选项" class="fa fa-cog" data-remodal-target="preferences-modal"></i>
+        <i title="帮助" class="fa fa-question-circle" data-remodal-target="help-modal"></i>
+        <i title="关于" class="fa fa-info-circle" data-remodal-target="about-modal"></i>
       </div>
     </div>
     <div class="ui-layout-center">
@@ -104,6 +112,12 @@ T3: 2014-01-02, 9d"></i>
         <br/><a class="remodal-cancel">取消</a>
         <a class="remodal-confirm" id="ion-confirm">确定</a>
       </div>
+      <div class="remodal" data-remodal-id="preferences-modal"> <!-- Preferences 弹出框 -->
+        <img src="icon.png" width="64"/>
+        <h2>Markdown Plus 首选项</h2>
+        <input type="checkbox" id="vim-checkbox"/> Vim 模式
+        <br/><br/><a class="remodal-confirm">确定</a>
+      </div>
       <div class="remodal" data-remodal-id="help-modal"> <!-- help 弹出框 -->
         <img src="icon.png" width="64"/>
         <h2>Markdown Plus 帮助</h2>
@@ -121,9 +135,9 @@ T3: 2014-01-02, 9d"></i>
       </div>
       <div class="remodal" data-remodal-id="about-modal"> <!-- about 弹出框 -->
         <img src="icon.png" width="64"/>
-        <h2>Markdown Plus</h2> 版本 1.2.9
+        <h2>Markdown Plus</h2> 版本 1.3.0
         <p>轻量级 markdown 编辑器。</p>
-        <p>版权所有 © 2015 <a href="https://tylingsoft.com" target="_blank">Tylingsoft</a>。保留一切权利。</p>
+        <p>版权所有 © 2015 <a href="https://tylingsoft.com" target="_blank">Tylingsoft</a>。</p>
         <p>软件主页: <a href="https://tylingsoft.com/mdp" target="_blank">https://tylingsoft.com/mdp</a>。</p>
         <br/><a class="remodal-confirm">确定</a>
       </div>
