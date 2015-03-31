@@ -55,6 +55,10 @@ function set_preview_scroll(editor_scroll) { // 设置预览的滚动位置
   $('.ui-layout-east').animate({scrollTop: scrollPosition}, 128); // 加一点动画效果
 }
 
+var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同步
+  set_preview_scroll(get_editor_scroll());
+}, 128, false);
+
 var mermaid_config = {
   htmlLabels: false // fix mermaid flowchart IE issue
 };
@@ -78,11 +82,6 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
       }]
   ]
 };
-
-// synchronize preview scrolling
-var sync_preview = _.debounce(function() {
-  set_preview_scroll(get_editor_scroll());
-}, 128, false);
 
 // vim commands
 // todo: need some test
@@ -209,7 +208,22 @@ $(document).ready(function() {
     } else {
       return marked.Renderer.prototype.code.apply(this, arguments);
     }
-  }
+  };
+  renderer.html = function(html) {
+    var result = marked.Renderer.prototype.html.apply(this, arguments);
+    var h = $(result.bold());
+    h.find('script,iframe').remove();
+    return h.html();
+  };
+  renderer.paragraph = function(text) {
+    var result = marked.Renderer.prototype.paragraph.apply(this, arguments);
+    var h = $(result.bold());
+    h.find('img[src^="emoji/"]').each(function() { //如果不在这个时刻执行这个，控制台报404
+      $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
+    });
+    h.find('script,iframe').remove();
+    return h.html();
+  };
   marked.setOptions({
     renderer: renderer,
     gfm: true,
@@ -229,7 +243,7 @@ $(document).ready(function() {
   var highlight = ace.require('ace/ext/static_highlight');
   var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
     $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
-    $('code').each(function(){ // code highlight
+    $('pre code').each(function(){ // code highlight
       var language = ($(this).attr('class') || 'lang-c_cpp').substring(5).toLowerCase();
       if(modelist[language] == undefined) {
         language = 'c_cpp';
