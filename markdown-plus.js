@@ -83,21 +83,18 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
   ]
 };
 
-// vim commands
-// todo: need some test
-var VimApi = ace.require("ace/keyboard/vim").CodeMirror.Vim
-VimApi.defineEx("write", "w", function(cm, input) {
-  $('.file-icon[data-name="save"]').click();
+var Vim = ace.require("ace/keyboard/vim").CodeMirror.Vim // vim commands
+Vim.defineEx("write", "w", function(cm, input) {
   console.log('write');
 });
-VimApi.defineEx("quit", "q", function(cm, input) {
-  if(input.input == 'q') {
+Vim.defineEx("quit", "q", function(cm, input) {
+  if(input.input === 'q') {
     console.log('quit');
-  } else if(input.input == 'q!') {
+  } else if(input.input === 'q!') {
     console.log('quit without warning');
   }
 });
-VimApi.defineEx("wq", "wq", function(cm, input) {
+Vim.defineEx("wq", "wq", function(cm, input) {
   console.log('write then quit');
 });
 
@@ -147,6 +144,7 @@ $(document).ready(function() {
     $('#vim-checkbox').prop('checked', true);
     editor.setKeyboardHandler(ace.require("ace/keyboard/vim").handler);
   }
+  $('#vim-checkbox').button(); // turn checkbox into a toggle button
 
   // 编辑器的一些拓展方法
   editor.selection.smartRange = function() {
@@ -243,18 +241,26 @@ $(document).ready(function() {
   var highlight = ace.require('ace/ext/static_highlight');
   var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
     $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
-    $('pre code').each(function(){ // code highlight
-      var language = ($(this).attr('class') || 'lang-c_cpp').substring(5).toLowerCase();
+    $('code').each(function(){ // code highlight
+      var code = $(this);
+      var language = (code.attr('class') || 'lang-javascript').substring(5).toLowerCase();
       if(modelist[language] == undefined) {
-        language = 'c_cpp';
+        language = 'javascript';
       }
-      highlight($(this)[0], {
+      highlight(code[0], {
           mode: 'ace/mode/' + language,
           theme: 'ace/theme/github',
           startLineNumber: 1,
           showGutter: false,
           trim: true,
-      }, function (highlighted) {});
+        }, function (highlighted) {
+          if(code.parent()[0].tagName === 'P') { // inline code
+            code.find('div.ace_line').each(function(){
+              $(this).html($.trim($(this).html())); // 移除因为上面 highlight 而加进去的空白（换行符）
+            });
+          }
+        }
+      );
     });
     $('img[src^="emoji/"]').each(function() { // 转换emoji路径
       $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');

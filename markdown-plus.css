@@ -23,11 +23,11 @@ body{
   height: 100%;
 }
 
-.markdown-body { /* 模拟GitHub的页面设置 */
-  min-width: 200px;
-  max-width: 790px;
+.markdown-body { /* 最大宽度模拟 Foundation */
+  min-width: 16em;
+  max-width: 62.5em;
   margin: 0 auto;
-  padding: 30px;
+  padding: 1em;
 }
 
 #toolbar {
@@ -111,6 +111,13 @@ i.dividor { /* toolbar 上面的分隔竖线 */
   color: #0086b3 !important;
 }
 
+.remodal-overlay {
+  background: rgba(33, 36, 46, 0.6) !important;
+}
+
+p > code div { /* inline code */
+  display: inline !important;
+}
 
 /*************************/
 /* below is for printing */

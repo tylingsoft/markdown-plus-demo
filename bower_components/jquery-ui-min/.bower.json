@@ -24,7 +24,7 @@
   "_resolution": {
     "type": "version",
     "tag": "v1.11.4",
-    "commit": "90b60b65d1ac70024b316856531eb4ee9e18a02d"
+    "commit": "308e474996aebe1b9615e28b94a0d9f81eab5ee0"
   },
   "_source": "git://github.com/tylerlong/jquery-ui-min.git",
   "_target": "*",
