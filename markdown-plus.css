@@ -115,8 +115,8 @@ i.dividor { /* toolbar 上面的分隔竖线 */
   background: rgba(33, 36, 46, 0.6) !important;
 }
 
-p > code div { /* inline code */
-  display: inline !important;
+div.mermaid {
+  text-align: center;
 }
 
 /*************************/
@@ -128,7 +128,7 @@ p > code div { /* inline code */
     display: none !important;
   }
 
-  table, pre, blockquote {
+  table, pre, blockquote, div.mermaid {
     page-break-inside: avoid;
   }
 }

@@ -1,7 +1,7 @@
 # Markdown Plus
 
 ![Markdown Plus](icon.png)
-Markdown Plus is a lightweight markdown editor. Besides common markdown, GitHub flavored markdown, it also supports task lists, emojis, Font Awesome icons, Ionicons icons, Mathematical formulae, flowcharts, sequence diagrams and gantt diagrams.
+Markdown Plus is a versatile markdown editor. Besides common markdown, GitHub flavored markdown, it also supports task lists, emojis, Font Awesome icons, Ionicons icons, mathematical formulae, flowcharts, sequence diagrams, gantt diagrams and Vim mode.
 
 
 #### Fork me on GitHub: <i class="fa fa-github" style="font-size: 64px;"/> [tylingsoft/markdown-plus](https://github.com/tylingsoft/markdown-plus).
@@ -10,18 +10,12 @@ Markdown Plus is a lightweight markdown editor. Besides common markdown, GitHub 
 
 ---
 
-## GitHub flavored markdown
 
-| Left-Aligned  | Center Aligned  | Right Aligned |
-| :------------ |:---------------:| -----:|
-| col 3 is      | some wordy text | $1600 |
-| col 2 is      | centered        |   $12 |
-| zebra stripes | are neat        |    $1 |
+## Code blocks with syntax highlight
 
-[GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
-
-
-## Fenced code blocks
+    <?php
+        echo "Hello world!";
+    ?>
 
 ```python
 from fabric.api import local
@@ -31,6 +25,19 @@ def update():
     local('bower cache clean')
     local('bower update')
 ```
+
+
+## Tables and alignment
+
+Function name | Description
+------------- | -----------
+`help()`      | Display the help window.
+`destroy()`   | **Destroy your computer!**
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+| :------------ |:---------------:| -----:|
+| col 3 is      | some wordy text | $1600 |
+| col 2 is      | centered        |   $12 |
 
 
 ## Task lists
