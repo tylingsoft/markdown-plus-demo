@@ -52,12 +52,12 @@ function set_preview_scroll(editor_scroll) { // 设置预览的滚动位置
     nextPosition = $('.ui-layout-east article').find('h1,h2,h3,h4,h5,h6').filter('[data-line="' + editor_scroll.nextHeader + '"]').get(0).offsetTop;
   } // 查找出前后两个header在页面上所处的滚动距离
   scrollPosition = lastPosition + (nextPosition - lastPosition) * editor_scroll.percentage; // 按照左侧的百分比计算出右侧应该滚动到的位置
-  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 128); // 加一点动画效果
+  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 16); // 加一点动画效果
 }
 
 var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同步
   set_preview_scroll(get_editor_scroll());
-}, 128, false);
+}, 16, false);
 
 var mermaid_config = {
   htmlLabels: false // fix mermaid flowchart IE issue
@@ -82,6 +82,39 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
       }]
   ]
 };
+function mermaid_init() {
+  mermaid.init(); // generate flowcharts, sequence diagrams, gantt diagrams...etc.
+  $('line[y2="2000"]').each(function(){ // a temp workaround for mermaid bug: https://github.com/knsv/mermaid/issues/142
+    $(this).attr('y2', $(this).closest('svg').attr('height') - 10);
+  });
+}
+
+var modelist = ace.require('ace/ext/modelist').modesByName;
+var highlight = ace.require('ace/ext/static_highlight');
+var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
+  $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
+  $('pre > code').each(function(){ // code highlight
+    var code = $(this);
+    var language = (code.attr('class') || 'lang-javascript').substring(5).toLowerCase();
+    if(modelist[language] == undefined) {
+      language = 'javascript';
+    }
+    highlight(code[0], {
+        mode: 'ace/mode/' + language,
+        theme: 'ace/theme/github',
+        startLineNumber: 1,
+        showGutter: false,
+        trim: true,
+      },
+      function(highlighted){}
+    );
+  });
+  $('img[src^="emoji/"]').each(function() { // 转换emoji路径
+    $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
+  });
+  mermaid_init();
+  sync_preview();
+}, 128, false);
 
 var Vim = ace.require("ace/keyboard/vim").CodeMirror.Vim // vim commands
 Vim.defineEx("write", "w", function(cm, input) {
@@ -114,7 +147,10 @@ $(document).ready(function() {
     east: {
       size: '50%',
       togglerTip_open: $('#preview').data('open-title'),
-      togglerTip_closed: $('#preview').data('closed-title')
+      togglerTip_closed: $('#preview').data('closed-title'),
+      onresize: function() { // mermaid gantt diagram 宽度无法自适应, 只能每次重新生成
+        lazy_change();
+      }
     },
     center: {
       onresize: function() {
@@ -178,6 +214,17 @@ $(document).ready(function() {
   mermaid.parseError = function(err, hash){
     mermaidError = err;
   };
+  renderer.codespan = function(text) { // inline code
+    if(/^\$.+\$$/.test(text)) { // inline math
+      var line = /^\$(.+)\$$/.exec(text)[1];
+      try{
+        return katex.renderToString(line, { displayMode: false });
+      } catch(err) {
+        return '<code>' + err + '</code>';
+      }
+    }
+    return marked.Renderer.prototype.codespan.apply(this, arguments);
+  }
   renderer.code = function(code, language) {
     code = code.trim();
     var firstLine = code.split(/\n/)[0].trim();
@@ -237,35 +284,6 @@ $(document).ready(function() {
   editor.session.on('change', function() {
     lazy_change();
   });
-  var modelist = ace.require('ace/ext/modelist').modesByName;
-  var highlight = ace.require('ace/ext/static_highlight');
-  var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
-    $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
-    $('pre > code').each(function(){ // code highlight
-      var code = $(this);
-      var language = (code.attr('class') || 'lang-javascript').substring(5).toLowerCase();
-      if(modelist[language] == undefined) {
-        language = 'javascript';
-      }
-      highlight(code[0], {
-          mode: 'ace/mode/' + language,
-          theme: 'ace/theme/github',
-          startLineNumber: 1,
-          showGutter: false,
-          trim: true,
-        },
-        function(highlighted){}
-      );
-    });
-    $('img[src^="emoji/"]').each(function() { // 转换emoji路径
-      $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
-    });
-    mermaid.init(); // generate flowcharts, sequence diagrams, gantt diagrams...etc.
-    $('line[y2="2000"]').each(function(){ // a temp workaround for mermaid bug: https://github.com/knsv/mermaid/issues/142
-      $(this).attr('y2', $(this).closest('svg').attr('height') - 10);
-    });
-    sync_preview();
-  }, 128, false);
 
   // h1 - h6 heading
   $('.heading-icon').click(function() {
