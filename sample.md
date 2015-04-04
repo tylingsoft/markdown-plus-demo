@@ -4,9 +4,9 @@
 Markdown Plus is a versatile markdown editor. Besides common markdown, GitHub flavored markdown, it also supports task lists, emojis, Font Awesome icons, Ionicons icons, mathematical formulae, flowcharts, sequence diagrams, gantt diagrams and Vim mode.
 
 
-#### Fork me on GitHub: <i class="fa fa-github" style="font-size: 64px;"/> [tylingsoft/markdown-plus](https://github.com/tylingsoft/markdown-plus).
+##### Fork me on GitHub: <i class="fa fa-github" style="font-size: 64px;"/> [tylingsoft/markdown-plus](https://github.com/tylingsoft/markdown-plus).
 
-#### Buy our Mac app: <i class="fa fa-apple" style="font-size: 64px;"/> [tylingsoft.com/mdp](https://tylingsoft.com/mdp)
+##### Buy our Mac app: <i class="fa fa-apple" style="font-size: 64px;"/> [tylingsoft.com/mdp](https://tylingsoft.com/mdp)
 
 ---
 
@@ -77,12 +77,12 @@ Function name | Description
 
 ## Ionicons icons
 
-<i class="icon ion-beer" style="font-size: 96px;"/>
-<i class="icon ion-key" style="font-size: 96px;"/>
-<i class="icon ion-locked" style="font-size: 96px;"/>
-<i class="icon ion-location" style="font-size: 96px;"/>
-<i class="icon ion-plane" style="font-size: 96px;"/>
-<i class="icon ion-ios-eye" style="font-size: 96px;"/>
+<i class="icon ion-beer" style="font-size: 88px;"/>
+<i class="icon ion-key" style="font-size: 88px;"/>
+<i class="icon ion-locked" style="font-size: 88px;"/>
+<i class="icon ion-location" style="font-size: 88px;"/>
+<i class="icon ion-plane" style="font-size: 88px;"/>
+<i class="icon ion-ios-eye" style="font-size: 88px;"/>
 
 [All the Ionicons icons](http://ionicons.com/)
 
