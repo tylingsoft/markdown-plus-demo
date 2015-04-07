@@ -1,6 +1,3 @@
-var light_theme = 'ace/theme/tomorrow';
-var dark_theme = 'ace/theme/tomorrow_night_eighties';
-
 String.prototype.repeat = function(i) { // Some browsers don't support repeat, for example, Safari
     return new Array(i + 1).join(this);
 }
@@ -179,36 +176,37 @@ $(document).ready(function() {
   });
 
   // load preferences
-  if($.cookie('vim-mode') == 'true') {
-    $('#vim-mode').prop('checked', true);
-    editor.setKeyboardHandler(ace.require("ace/keyboard/vim").handler);
+  var key_binding = $.cookie('key-binding');
+  if(key_binding == undefined) {
+    key_binding = 'default'
   }
-  if($.cookie('dark-editor-theme') == 'true') {
-    $('#dark-editor-theme').prop('checked', true);
-    editor.setTheme(dark_theme);
-  } else {
-    editor.setTheme(light_theme);
+  $('select#key-binding').val(key_binding);
+  if(key_binding !== 'default') {
+    editor.setKeyboardHandler(ace.require("ace/keyboard/" + key_binding).handler);
   }
-  $('.toggle-button').button(); // turn checkboxes into toggle buttons
 
-  // Preferences
-  $('#vim-mode').change(function() {
-    if($(this).is(':checked')) {
-      $.cookie('vim-mode', true, { expires: 10000 });
-      editor.setKeyboardHandler(ace.require("ace/keyboard/vim").handler);
-    } else {
-      $.cookie('vim-mode', false, { expires: 10000 });
+  var editor_theme = $.cookie('editor-theme');
+  if(editor_theme == undefined) {
+    editor_theme = 'tomorrow_night_eighties';
+  }
+  $('select#editor-theme').val(editor_theme);
+  editor.setTheme('ace/theme/' + editor_theme);
+
+  // change preferences
+  $('select#key-binding').change(function(){
+    var key_binding = $(this).val();
+    $.cookie('key-binding', key_binding, { expires: 10000 });
+    if(key_binding == 'default') {
       editor.setKeyboardHandler(null);
+    } else {
+      editor.setKeyboardHandler(ace.require("ace/keyboard/" + key_binding).handler);
     }
   });
-  $('#dark-editor-theme').change(function() {
-    if($(this).is(':checked')) {
-      $.cookie('dark-editor-theme', true, { expires: 10000 });
-      editor.setTheme(dark_theme);
-    } else {
-      $.cookie('dark-editor-theme', false, { expires: 10000 });
-      editor.setTheme(light_theme);
-    }
+
+  $('select#editor-theme').change(function(){
+    var editor_theme = $(this).val();
+    $.cookie('editor-theme', editor_theme, { expires: 10000 });
+    editor.setTheme('ace/theme/' + editor_theme);
   });
 
   // 编辑器的一些拓展方法
