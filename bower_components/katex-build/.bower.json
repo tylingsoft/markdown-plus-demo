@@ -1,6 +1,6 @@
 {
   "name": "katex-build",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [
     "Tyler Long <tyler4long@gmail.com>"
   ],
@@ -23,11 +23,11 @@
     "README.md",
     "fabfile.py"
   ],
-  "_release": "0.2.0",
+  "_release": "0.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.2.0",
-    "commit": "cb6739f82a87c72b43b75fa4aabc03e0eaec2257"
+    "tag": "v0.3.0",
+    "commit": "1f9c3ed4b92c52feea802acf2e5bcb21a974f037"
   },
   "_source": "git://github.com/tylerlong/katex-build.git",
   "_target": "*",

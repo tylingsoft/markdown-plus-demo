@@ -24,7 +24,7 @@
   "_resolution": {
     "type": "version",
     "tag": "v0.4.0",
-    "commit": "5ec65d7f8eabfb8bc252653308fd0dc81b819fca"
+    "commit": "34896f3885dbd6e4a1b609651ad64ed3e85d9336"
   },
   "_source": "git://github.com/tylerlong/mermaid-min.git",
   "_target": "*",

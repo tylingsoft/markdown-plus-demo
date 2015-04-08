@@ -1,6 +1,6 @@
 {
   "name": "ace-min-noconflict",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "homepage": "https://github.com/tylerlong/ace-min-noconflict",
   "authors": [
     "Tyler Long <tyler4long@gmail.com>"
@@ -21,11 +21,11 @@
     "fabfile.py",
     "README.md"
   ],
-  "_release": "1.1.8",
+  "_release": "1.1.9",
   "_resolution": {
     "type": "version",
-    "tag": "v1.1.8",
-    "commit": "fc74e920b7eaa5ecaf68f21fa42d2a23a347534c"
+    "tag": "v1.1.9",
+    "commit": "2e62fa0b52407120d452131125062f6fc1beb8c6"
   },
   "_source": "git://github.com/tylerlong/ace-min-noconflict.git",
   "_target": "*",

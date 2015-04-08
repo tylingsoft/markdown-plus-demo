@@ -1,6 +1,6 @@
 {
   "name": "underscore-min",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "homepage": "https://github.com/tylerlong/underscore-min",
   "authors": [
     "Tyler Long <tyler4long@gmail.com>"
@@ -20,11 +20,11 @@
     "README.md",
     "fabfile.py"
   ],
-  "_release": "1.8.2",
+  "_release": "1.8.3",
   "_resolution": {
     "type": "version",
-    "tag": "v1.8.2",
-    "commit": "a8466a1df52ee9c69a7f524819d69bf5f31124a6"
+    "tag": "v1.8.3",
+    "commit": "7ff829dc6ddce60bdad83a4f9a9a3621ee42b089"
   },
   "_source": "git://github.com/tylerlong/underscore-min.git",
   "_target": "*",

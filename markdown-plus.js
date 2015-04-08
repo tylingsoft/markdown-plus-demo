@@ -3,9 +3,9 @@ String.prototype.repeat = function(i) { // Some browsers don't support repeat, f
 }
 
 function get_editor_scroll() { // 获取编辑器的滚动位置
-  var headers = $('.ui-layout-east article').find('h1,h2,h3,h4,h5,h6').filter('[data-line]'); // 把没有data-line属性的排除掉
+  var line_markers = $('.ui-layout-east article > [data-line]');
   var lines = []; // 逻辑行
-  headers.each(function(){
+  line_markers.each(function() {
     lines.push($(this).data('line'));
   });
   var pLines = []; // 物理行
@@ -17,46 +17,108 @@ function get_editor_scroll() { // 获取编辑器的滚动位置
     pLine += editor.session.getRowLength(i) // 因为有wrap，所以行高未必是1
   }
   var currentLine = editor.session.getScrollTop() / editor.renderer.lineHeight; // 当前滚动到的物理行
-  var lastHeader = false;
-  var nextHeader = false;
+  var lastMarker = false;
+  var nextMarker = false;
   for(var i = 0; i < pLines.length; i++) {
     if(pLines[i] < currentLine) {
-      lastHeader = i;
+      lastMarker = i;
     } else {
-      nextHeader = i;
+      nextMarker = i;
       break;
     }
-  } // 当前滚动到了哪两个header中间
+  } // 当前滚动到了哪两个marker中间
   var lastLine = 0;
   var nextLine = editor.session.getScreenLength() - 1; // 最后一个物理行的顶部，所以 -1
-  if(lastHeader !== false) {
-    lastLine = pLines[lastHeader];
+  if(lastMarker !== false) {
+    lastLine = pLines[lastMarker];
   }
-  if(nextHeader !== false) {
-    nextLine = pLines[nextHeader];
-  } // 前后两个header的物理行
+  if(nextMarker !== false) {
+    nextLine = pLines[nextMarker];
+  } // 前后两个marker的物理行
   var percentage = 0;
-  if(nextLine !== lastLine) { // 行首就是标题的情况下可能相等，0 不能作为除数
+  if(nextLine !== lastLine) { // 行首的情况下可能相等，0 不能作为除数
     percentage = (currentLine - lastLine) / (nextLine - lastLine);
-  } // 当前位置在两个header之间所处的百分比
-  return { lastHeader: lines[lastHeader], nextHeader: lines[nextHeader], percentage: percentage }; // 返回的是前后两个header对应的逻辑行，以及当前位置在前后两个header之间所处的百分比
+  } // 当前位置在两个marker之间所处的百分比
+  return { lastMarker: lines[lastMarker], nextMarker: lines[nextMarker], percentage: percentage }; // 返回的是前后两个marker对应的逻辑行，以及当前位置在前后两个marker之间所处的百分比
 }
 
 function set_preview_scroll(editor_scroll) { // 设置预览的滚动位置
   var lastPosition = 0;
   var nextPosition = $('.ui-layout-east article').outerHeight() - $('.ui-layout-east').height(); // 这是总共可以scroll的最大幅度
-  if(editor_scroll.lastHeader !== undefined) { // 最开始的位置没有标题
-    lastPosition = $('.ui-layout-east article').find('h1,h2,h3,h4,h5,h6').filter('[data-line="' + editor_scroll.lastHeader + '"]').get(0).offsetTop;
+  if(editor_scroll.lastMarker !== undefined) { // 最开始的位置没有marker
+    lastPosition = $('.ui-layout-east article').find('>[data-line="' + editor_scroll.lastMarker + '"]').get(0).offsetTop;
   }
-  if(editor_scroll.nextHeader !== undefined) { // 最末尾的位置没有标题
-    nextPosition = $('.ui-layout-east article').find('h1,h2,h3,h4,h5,h6').filter('[data-line="' + editor_scroll.nextHeader + '"]').get(0).offsetTop;
-  } // 查找出前后两个header在页面上所处的滚动距离
+  if(editor_scroll.nextMarker !== undefined) { // 最末尾的位置没有marker
+    nextPosition = $('.ui-layout-east article').find('>[data-line="' + editor_scroll.nextMarker + '"]').get(0).offsetTop;
+  } // 查找出前后两个marker在页面上所处的滚动距离
   scrollPosition = lastPosition + (nextPosition - lastPosition) * editor_scroll.percentage; // 按照左侧的百分比计算出右侧应该滚动到的位置
   $('.ui-layout-east').animate({scrollTop: scrollPosition}, 16); // 加一点动画效果
 }
 
+function get_preview_scroll() {
+  var scroll = $('.ui-layout-east').scrollTop();
+  var lastMarker = false;
+  var nextMarker = false;
+  var line_markers = $('.ui-layout-east article > [data-line]');
+  for(var i = 0; i < line_markers.length; i++) {
+    if(line_markers[i].offsetTop < scroll) {
+      lastMarker = i;
+    } else {
+      nextMarker = i;
+      break;
+    }
+  }
+  var lastLine = 0;
+  var nextLine = $('.ui-layout-east article').outerHeight() - $('.ui-layout-east').height(); // 这是总共可以scroll的最大幅度
+  if(lastMarker !== false) {
+    lastLine = line_markers[lastMarker].offsetTop;
+  }
+  if(nextMarker !== false) {
+    nextLine = line_markers[nextMarker].offsetTop;
+  }
+  var percentage = 0;
+  if(nextLine !== lastLine) {
+    percentage = (scroll - lastLine) / (nextLine - lastLine);
+  }
+  return { lastMarker: lastMarker, nextMarker: nextMarker, percentage: percentage }; // 返回的是前后两个marker的编号，以及当前位置在前后两个marker之间所处的百分比 
+}
+
+function set_editor_scroll(preview_scroll) {
+  var line_markers = $('.ui-layout-east article > [data-line]');
+  var lines = []; // 逻辑行
+  line_markers.each(function() {
+    lines.push($(this).data('line'));
+  });
+  var pLines = []; // 物理行
+  var pLine = 0;
+  for(var i = 0; i < lines[lines.length - 1]; i++) {
+    if($.inArray(i + 1, lines) !== -1) {
+      pLines.push(pLine);
+    }
+    pLine += editor.session.getRowLength(i) // 因为有wrap，所以行高未必是1
+  }
+  var lastLine = 0;
+  var nextLine = editor.session.getScreenLength() - 1; // 最后一个物理行的顶部
+  if(preview_scroll.lastMarker !== false) {
+    lastLine = pLines[preview_scroll.lastMarker]
+  }
+  if(preview_scroll.nextMarker !== false) {
+    nextLine = pLines[preview_scroll.nextMarker]
+  }
+  var scroll = ((nextLine - lastLine) * preview_scroll.percentage + lastLine) * editor.renderer.lineHeight;
+  editor.session.setScrollTop(scroll);
+}
+
 var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同步
-  set_preview_scroll(get_editor_scroll());
+  if(!$('.ui-layout-east').is(':hover')) { // 鼠标不在右侧，否则不触发
+    set_preview_scroll(get_editor_scroll());
+  }
+}, 16, false);
+
+var sync_editor = _.debounce(function() { // 左侧的内容和右侧预览同步
+  if($('.ui-layout-east').is(':hover')) { // 鼠标要在右侧，否则不触发
+    set_editor_scroll(get_preview_scroll());
+  }
 }, 16, false);
 
 var mermaid_config = {
@@ -148,8 +210,9 @@ $(document).ready(function() {
       size: '50%',
       togglerTip_open: $('#preview').data('open-title'),
       togglerTip_closed: $('#preview').data('closed-title'),
-      onresize: function() { // mermaid gantt diagram 宽度无法自适应, 只能每次重新生成
-        lazy_change();
+      onresize: function() {
+        lazy_change(); // mermaid gantt diagram 宽度无法自适应, 只能每次重新生成
+        $('.markdown-body').css('padding-bottom', ($('.ui-layout-east').height() - parseInt($('.markdown-body').css('line-height')) + 1) + 'px'); // scroll past end
       }
     },
     center: {
@@ -160,14 +223,18 @@ $(document).ready(function() {
     }
   });
 
+  $('.markdown-body').css('padding-bottom', ($('.ui-layout-east').height() - parseInt($('.markdown-body').css('line-height')) + 1) + 'px'); // scroll past end
+  $('.ui-layout-east').scroll(function() {
+      sync_editor();
+  });
+
   // editor on the left
   editor = ace.edit("editor");
   editor.$blockScrolling = Infinity;
   editor.renderer.setShowPrintMargin(false);
   editor.session.setMode('ace/mode/markdown');
   editor.session.setUseWrapMode(true);
-  editor.setFontSize('14px');
-  editor.setScrollSpeed(1);
+  editor.setScrollSpeed(0.5);
   editor.setOption("scrollPastEnd", true);
   editor.session.setFoldStyle('manual');
   editor.focus();
@@ -185,6 +252,13 @@ $(document).ready(function() {
     editor.setKeyboardHandler(ace.require("ace/keyboard/" + key_binding).handler);
   }
 
+  var font_size = $.cookie('editor-font-size');
+  if(font_size == undefined) {
+    font_size = '14';
+  }
+  $('select#editor-font-size').val(font_size);
+  editor.setFontSize(font_size + 'px');
+
   var editor_theme = $.cookie('editor-theme');
   if(editor_theme == undefined) {
     editor_theme = 'tomorrow_night_eighties';
@@ -193,7 +267,7 @@ $(document).ready(function() {
   editor.setTheme('ace/theme/' + editor_theme);
 
   // change preferences
-  $('select#key-binding').change(function(){
+  $('select#key-binding').change(function() {
     var key_binding = $(this).val();
     $.cookie('key-binding', key_binding, { expires: 10000 });
     if(key_binding == 'default') {
@@ -203,7 +277,13 @@ $(document).ready(function() {
     }
   });
 
-  $('select#editor-theme').change(function(){
+  $('select#editor-font-size').change(function() {
+    var font_size = $(this).val();
+    $.cookie('editor-font-size', font_size, { expires: 10000 });
+    editor.setFontSize(font_size + 'px');
+  });
+
+  $('select#editor-theme').change(function() {
     var editor_theme = $(this).val();
     $.cookie('editor-theme', editor_theme, { expires: 10000 });
     editor.setTheme('ace/theme/' + editor_theme);
@@ -252,7 +332,7 @@ $(document).ready(function() {
     }
     return marked.Renderer.prototype.codespan.apply(this, arguments);
   }
-  renderer.code = function(code, language) {
+  renderer.code = function(code, language, escaped, line_number) {
     code = code.trim();
     var firstLine = code.split(/\n/)[0].trim();
     if(language === 'math') { // 数学公式
@@ -267,15 +347,15 @@ $(document).ready(function() {
           }
         }
       });
-      return tex;
+      return '<div data-line="' + line_number + '">' + tex + '</div>';
     } else if(firstLine === 'gantt' || firstLine === 'sequenceDiagram' || firstLine.match(/^graph (?:TB|BT|RL|LR|TD);?$/)) { // mermaid
       if(firstLine === 'sequenceDiagram') {
         code += '\n'; // 如果末尾没有空行，则语法错误
       }
       if(mermaid.parse(code)) {
-        return '<div class="mermaid">' + code + '</div>';
+        return '<div class="mermaid" data-line="' + line_number + '">' + code + '</div>';
       } else {
-        return '<pre>' + mermaidError + '</pre>';
+        return '<pre data-line="' + line_number + '">' + mermaidError + '</pre>';
       }
     } else {
       return marked.Renderer.prototype.code.apply(this, arguments);
@@ -443,6 +523,17 @@ $(document).ready(function() {
   $(document).on('close', '.remodal', function(e) {
     editor.focus(); // 关闭modal，编辑器自动获得焦点
   });
+
+  // overwrite some ACE editor keyboard shortcuts
+  editor.commands.addCommands([
+    {
+      name: "preferences",
+      bindKey: { win: "Ctrl-,", mac: "Command-," },
+      exec: function (editor) {
+        $('i.fa-cog').click(); // show M+ preferences modal
+      }
+    }
+  ]);
 });
 
 function prompt_for_a_value(key, action) {

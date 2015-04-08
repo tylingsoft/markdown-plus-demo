@@ -16,13 +16,14 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "README.md"
   ],
   "_release": "0.6.3",
   "_resolution": {
     "type": "version",
     "tag": "v0.6.3",
-    "commit": "495527ee2344bc5844a9eac8ce82995a0ee4e4cd"
+    "commit": "28f3e940bcd619d9e5a65fc0fd5326ad8c934560"
   },
   "_source": "git://github.com/tylerlong/remodal-min.git",
   "_target": "*",
