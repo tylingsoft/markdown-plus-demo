@@ -25,7 +25,7 @@
   "_resolution": {
     "type": "version",
     "tag": "v1.1.9",
-    "commit": "2e62fa0b52407120d452131125062f6fc1beb8c6"
+    "commit": "e8d6ffabcef15555156b230b41d6cf576089c336"
   },
   "_source": "git://github.com/tylerlong/ace-min-noconflict.git",
   "_target": "*",

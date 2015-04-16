@@ -171,9 +171,6 @@ var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后�
       function(highlighted){}
     );
   });
-  $('img[src^="emoji/"]').each(function() { // 转换emoji路径
-    $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
-  });
   mermaid_init();
   sync_preview();
 }, 128, false);
@@ -230,11 +227,12 @@ $(document).ready(function() {
 
   // editor on the left
   editor = ace.edit("editor");
+  editor.session.setUseWorker(false);
   editor.$blockScrolling = Infinity;
   editor.renderer.setShowPrintMargin(false);
   editor.session.setMode('ace/mode/markdown');
   editor.session.setUseWrapMode(true);
-  editor.setScrollSpeed(0.5);
+  editor.setScrollSpeed(1);
   editor.setOption("scrollPastEnd", true);
   editor.session.setFoldStyle('manual');
   editor.focus();
@@ -370,9 +368,6 @@ $(document).ready(function() {
   renderer.paragraph = function(text) {
     var result = marked.Renderer.prototype.paragraph.apply(this, arguments);
     var h = $(result.bold());
-    h.find('img[src^="emoji/"]').each(function() { //如果不在这个时刻执行这个，控制台报404
-      $(this).attr('src', 'bower_components/emoji-icons/' + $(this).attr('src').substring(6) + '.png');
-    });
     h.find('script,iframe').remove();
     return h.html();
   };
@@ -488,7 +483,7 @@ $(document).ready(function() {
 
   // emoji icon
   prompt_for_a_value('emoji', function(value){
-    editor.insert('<img src="emoji/' + value + '" width="18"/>');
+    editor.insert('<img src="https://s.tylingsoft.com/emoji-icons/' + value + '.png" width="18"/>');
   });
 
   // Font Awesome icon

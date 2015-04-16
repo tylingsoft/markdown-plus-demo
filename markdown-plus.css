@@ -6,6 +6,9 @@ body{
 .app-only {
   display: none;
 }
+.guest-only { /* 未注册用户 */
+  display: none;
+}
 
 .ui-layout-pane {
   border-width: 0;
