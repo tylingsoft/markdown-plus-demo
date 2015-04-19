@@ -18,13 +18,14 @@
     "test",
     "tests",
     "README.md",
-    "fabfile.py"
+    "fabfile.py",
+    "mermaid.full.js"
   ],
   "_release": "0.4.0",
   "_resolution": {
     "type": "version",
     "tag": "v0.4.0",
-    "commit": "34896f3885dbd6e4a1b609651ad64ed3e85d9336"
+    "commit": "42ef043df9aebae5c27cfc9d84e1ff57924b68c4"
   },
   "_source": "git://github.com/tylerlong/mermaid-min.git",
   "_target": "*",

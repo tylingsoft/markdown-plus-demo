@@ -18,6 +18,7 @@
     "test",
     "tests",
     "README.md",
-    "fabfile.py"
+    "fabfile.py",
+    "mermaid.full.js"
   ]
 }
