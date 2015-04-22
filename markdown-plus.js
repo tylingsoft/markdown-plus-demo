@@ -59,9 +59,9 @@ var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同�
   set_preview_scroll(get_editor_scroll());
 }, 16, false);
 
-var mermaid_config = {
-  htmlLabels: false // fix mermaid flowchart IE issue
-};
+// var mermaid_config = {
+//   htmlLabels: false // fix mermaid flowchart IE issue
+// };
 mermaid.ganttConfig = { // Configuration for Gantt diagrams
   numberSectionStyles:4,
   axisFormatter: [
@@ -84,9 +84,9 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
 };
 function mermaid_init() {
   mermaid.init(); // generate flowcharts, sequence diagrams, gantt diagrams...etc.
-  $('line[y2="2000"]').each(function(){ // a temp workaround for mermaid bug: https://github.com/knsv/mermaid/issues/142
-    $(this).attr('y2', $(this).closest('svg').attr('height') - 10);
-  });
+  // $('line[y2="2000"]').each(function(){ // a temp workaround for mermaid bug: https://github.com/knsv/mermaid/issues/142
+  //   $(this).attr('y2', $(this).closest('svg').attr('height') - 10);
+  // });
 }
 
 var modelist = ace.require('ace/ext/modelist').modesByName;
@@ -256,7 +256,8 @@ $(document).ready(function() {
   };
   renderer.codespan = function(text) { // inline code
     if(/^\$.+\$$/.test(text)) { // inline math
-      var line = /^\$(.+)\$$/.exec(text)[1];
+      var raw = /^\$(.+)\$$/.exec(text)[1];
+      var line = raw.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); // unescape html characters
       try{
         return katex.renderToString(line, { displayMode: false });
       } catch(err) {
@@ -297,13 +298,13 @@ $(document).ready(function() {
   renderer.html = function(html) {
     var result = marked.Renderer.prototype.html.apply(this, arguments);
     var h = $(result.bold());
-    h.find('script,iframe').remove();
+    // h.find('script,iframe').remove();
     return h.html();
   };
   renderer.paragraph = function(text) {
     var result = marked.Renderer.prototype.paragraph.apply(this, arguments);
     var h = $(result.bold());
-    h.find('script,iframe').remove();
+    // h.find('script,iframe').remove();
     return h.html();
   };
   marked.setOptions({
@@ -395,11 +396,10 @@ $(document).ready(function() {
 
   $('#code-icon').click(function() {
     var text = editor.session.getTextRange(editor.selection.getRange()).trim();
-    if(text.length == 0) {
-      text = $(this).data('sample');
-    }
     editor.insert('\n```\n' + text + '\n```\n');
     editor.focus();
+    editor.navigateUp(2);
+    editor.navigateLineEnd();
   });
 
   $('#table-icon').click(function() {
@@ -418,16 +418,25 @@ $(document).ready(function() {
 
   // emoji icon
   prompt_for_a_value('emoji', function(value){
+    if(/^:.+:$/.test(value)) {
+      value = /^:(.+):$/.exec(value)[1];
+    }
     editor.insert('<img src="https://s.tylingsoft.com/emoji-icons/' + value + '.png" width="18"/>');
   });
 
   // Font Awesome icon
   prompt_for_a_value('fa', function(value){
+    if(value.substring(0, 3) == 'fa-') {
+      value = value.substring(3);
+    }
     editor.insert('<i class="fa fa-' + value + '"/>');
   });
 
   // Ionicons icon
   prompt_for_a_value('ion', function(value){
+    if(value.substring(0, 4) == 'ion-') {
+      value = value.substring(4);
+    }
     editor.insert('<i class="icon ion-' + value + '"/>');
   });
 
