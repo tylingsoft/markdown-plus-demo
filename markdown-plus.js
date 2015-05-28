@@ -52,16 +52,13 @@ function set_preview_scroll(editor_scroll) { // 设置预览的滚动位置
     nextPosition = $('.ui-layout-east article').find('>[data-line="' + editor_scroll.nextMarker + '"]').get(0).offsetTop;
   } // 查找出前后两个marker在页面上所处的滚动距离
   scrollPosition = lastPosition + (nextPosition - lastPosition) * editor_scroll.percentage; // 按照左侧的百分比计算出右侧应该滚动到的位置
-  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 64); // 加一点动画效果
+  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 16); // 加一点动画效果
 }
 
 var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同步
   set_preview_scroll(get_editor_scroll());
-}, 16, false);
+}, 8, false);
 
-// var mermaid_config = {
-//   htmlLabels: false // fix mermaid flowchart IE issue
-// };
 mermaid.ganttConfig = { // Configuration for Gantt diagrams
   numberSectionStyles:4,
   axisFormatter: [
@@ -84,9 +81,6 @@ mermaid.ganttConfig = { // Configuration for Gantt diagrams
 };
 function mermaid_init() {
   mermaid.init(); // generate flowcharts, sequence diagrams, gantt diagrams...etc.
-  // $('line[y2="2000"]').each(function(){ // a temp workaround for mermaid bug: https://github.com/knsv/mermaid/issues/142
-  //   $(this).attr('y2', $(this).closest('svg').attr('height') - 10);
-  // });
 }
 
 var modelist = ace.require('ace/ext/modelist').modesByName;
@@ -298,7 +292,6 @@ $(document).ready(function() {
   renderer.html = function(html) {
     var result = marked.Renderer.prototype.html.apply(this, arguments);
     var h = $(result.bold());
-    // h.find('script,iframe').remove();
     return h.html();
   };
   renderer.paragraph = function(text) {
