@@ -1,0 +1,43 @@
+{
+  "name": "markdown-core",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "Markdown Core",
+  "main": "index.html",
+  "keywords": [
+    "markdown"
+  ],
+  "license": "MIT",
+  "homepage": "http://mdp.tylingsoft.com/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "vendor/",
+    "fabfile.py"
+  ],
+  "dependencies": {
+    "markdown-it-sub": null,
+    "markdown-it-sup": null,
+    "markdown-it-footnote": null,
+    "markdown-it-container": null,
+    "markdown-it-abbr": null,
+    "markdown-it-deflist": null,
+    "markdown-it-ins": null,
+    "markdown-it-mark": null,
+    "markdown-it-icons": null
+  },
+  "version": "0.0.5",
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.5",
+    "commit": "5f73b00420f051e5de22d327a04d3c1034001cf6"
+  },
+  "_source": "git://github.com/tylingsoft/markdown-core.git",
+  "_target": "*",
+  "_originalSource": "markdown-core"
+}

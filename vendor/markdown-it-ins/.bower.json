@@ -1,0 +1,38 @@
+{
+  "name": "markdown-it-ins",
+  "main": "dist/markdown-it-ins.js",
+  "homepage": "https://github.com/markdown-it/markdown-it-ins",
+  "description": "<ins> tag for markdown-it markdown parser.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "insert",
+    "ins"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "benchmark",
+    "bower_components",
+    "coverage",
+    "demo",
+    "docs",
+    "lib",
+    "node_modules",
+    "support",
+    "test",
+    "Makefile",
+    "index*"
+  ],
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0",
+    "commit": "e34bb061b86416533f6b8b43e94498669f32242b"
+  },
+  "_source": "git://github.com/markdown-it/markdown-it-ins.git",
+  "_target": "*",
+  "_originalSource": "markdown-it-ins"
+}

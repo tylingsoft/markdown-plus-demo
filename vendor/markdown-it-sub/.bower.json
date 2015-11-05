@@ -1,0 +1,38 @@
+{
+  "name": "markdown-it-sub",
+  "main": "dist/markdown-it-sub.js",
+  "homepage": "https://github.com/markdown-it/markdown-it-sub",
+  "description": "<sub> tag for markdown-it markdown parser.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "subscript",
+    "sub"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "benchmark",
+    "bower_components",
+    "coverage",
+    "demo",
+    "docs",
+    "lib",
+    "node_modules",
+    "support",
+    "test",
+    "Makefile",
+    "index*"
+  ],
+  "version": "1.0.0",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.0",
+    "commit": "78203e2ec05f41ee26a06754235c52f8a771561a"
+  },
+  "_source": "git://github.com/markdown-it/markdown-it-sub.git",
+  "_target": "*",
+  "_originalSource": "markdown-it-sub"
+}

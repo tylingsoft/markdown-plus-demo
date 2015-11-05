@@ -2,11 +2,33 @@ String.prototype.repeat = function(i) { // Some browsers don't support repeat, f
     return new Array(i + 1).join(this);
 }
 
+function prompt_for_a_value(key, action) {
+  $(document).on('opened', '#' + key + '-modal', function() {
+    $('#' + key + '-code').focus();
+  });
+  $('#' + key + '-code').keyup(function(e) {
+   if(e.which == 13) { // press enter to confirm
+      $('#' + key + '-confirm').click();
+    }
+  });
+  $(document).on('confirm', '#' + key + '-modal', function() {
+    var value = $('#' + key + '-code').val().trim();
+    if(value.length > 0) {
+      action(value);
+      $('#' + key + '-code').val('');
+    }
+  });
+}
+// modals
+$(document).on('close', '.remodal', function(e) {
+  editor.focus();
+});
+
 function get_editor_scroll() { // 获取编辑器的滚动位置
-  var line_markers = $('.ui-layout-east article > [data-line]');
+  var line_markers = $('.ui-layout-east article > [data-source-line]');
   var lines = []; // 逻辑行
   line_markers.each(function() {
-    lines.push($(this).data('line'));
+    lines.push($(this).data('source-line'));
   });
   var pLines = []; // 物理行
   var pLine = 0;
@@ -39,73 +61,31 @@ function get_editor_scroll() { // 获取编辑器的滚动位置
   if(nextLine !== lastLine) { // 行首的情况下可能相等，0 不能作为除数
     percentage = (currentLine - lastLine) / (nextLine - lastLine);
   } // 当前位置在两个marker之间所处的百分比
-  return { lastMarker: lines[lastMarker], nextMarker: lines[nextMarker], percentage: percentage }; // 返回的是前后两个marker对应的逻辑行，以及当前位置在前后两个marker之间所处的百分比
+  // 返回的是前后两个marker对应的逻辑行，以及当前位置在前后两个marker之间所处的百分比
+  return { lastMarker: lines[lastMarker], nextMarker: lines[nextMarker], percentage: percentage };
 }
 
 function set_preview_scroll(editor_scroll) { // 设置预览的滚动位置
   var lastPosition = 0;
   var nextPosition = $('.ui-layout-east article').outerHeight() - $('.ui-layout-east').height(); // 这是总共可以scroll的最大幅度
   if(editor_scroll.lastMarker !== undefined) { // 最开始的位置没有marker
-    lastPosition = $('.ui-layout-east article').find('>[data-line="' + editor_scroll.lastMarker + '"]').get(0).offsetTop;
+    lastPosition = $('.ui-layout-east article').find('>[data-source-line="' + editor_scroll.lastMarker + '"]').get(0).offsetTop;
   }
   if(editor_scroll.nextMarker !== undefined) { // 最末尾的位置没有marker
-    nextPosition = $('.ui-layout-east article').find('>[data-line="' + editor_scroll.nextMarker + '"]').get(0).offsetTop;
+    nextPosition = $('.ui-layout-east article').find('>[data-source-line="' + editor_scroll.nextMarker + '"]').get(0).offsetTop;
   } // 查找出前后两个marker在页面上所处的滚动距离
   scrollPosition = lastPosition + (nextPosition - lastPosition) * editor_scroll.percentage; // 按照左侧的百分比计算出右侧应该滚动到的位置
-  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 16); // 加一点动画效果
+  $('.ui-layout-east').animate({scrollTop: scrollPosition}, 32); // 加一点动画效果
 }
 
-var sync_preview = _.debounce(function() { // 右侧预览和左侧的内容同步
+var sync_preview = _.debounce(function() { // sync right with left
   set_preview_scroll(get_editor_scroll());
-}, 8, false);
+}, 32, false);
 
-mermaid.ganttConfig = { // Configuration for Gantt diagrams
-  numberSectionStyles:4,
-  axisFormatter: [
-      ["%I:%M", function (d) { // Within a day
-          return d.getHours();
-      }],
-      ["w. %U", function (d) { // Monday a week
-          return d.getDay() == 1;
-      }],
-      ["%a %d", function (d) { // Day within a week (not monday)
-          return d.getDay() && d.getDate() != 1;
-      }],
-      ["%b %d", function (d) { // within a month
-          return d.getDate() != 1;
-      }],
-      ["%m-%y", function (d) { // Month
-          return d.getMonth();
-      }]
-  ]
-};
-function mermaid_init() {
-  mermaid.init(); // generate flowcharts, sequence diagrams, gantt diagrams...etc.
-}
-
-var modelist = ace.require('ace/ext/modelist').modesByName;
-var highlight = ace.require('ace/ext/static_highlight');
-var lazy_change = _.debounce(function() { // 用户停止输入128毫秒之后才会触发
-  $('.markdown-body').empty().append(marked(editor.session.getValue())); // realtime preview
-  $('pre > code').each(function(){ // code highlight
-    var code = $(this);
-    var language = (code.attr('class') || 'lang-javascript').substring(5).toLowerCase();
-    if(modelist[language] == undefined) {
-      language = 'javascript';
-    }
-    highlight(code[0], {
-        mode: 'ace/mode/' + language,
-        theme: 'ace/theme/github',
-        startLineNumber: 1,
-        showGutter: false,
-        trim: true,
-      },
-      function(highlighted){}
-    );
-  });
-  mermaid_init();
+var lazy_change = _.debounce(function() { // user changes markdown text
+  mdc.init(editor.session.getValue(), false); // realtime preview
   sync_preview();
-}, 128, false);
+}, 256, false);
 
 var Vim = ace.require("ace/keyboard/vim").CodeMirror.Vim // vim commands
 Vim.defineEx("write", "w", function(cm, input) {
@@ -123,7 +103,7 @@ Vim.defineEx("wq", "wq", function(cm, input) {
 });
 
 var editor;
-$(document).ready(function() {
+$(function() {
   $('body').layout({ // create 3-panels layout
     resizerDblClickToggle: false,
     resizable: false,
@@ -140,13 +120,12 @@ $(document).ready(function() {
       togglerTip_open: $('#preview').data('open-title'),
       togglerTip_closed: $('#preview').data('closed-title'),
       onresize: function() {
-        lazy_change(); // mermaid gantt diagram 宽度无法自适应, 只能每次重新生成
         $('.markdown-body').css('padding-bottom', ($('.ui-layout-east').height() - parseInt($('.markdown-body').css('line-height')) + 1) + 'px'); // scroll past end
       }
     },
     center: {
       onresize: function() {
-        editor.session.setUseWrapMode(false); // ACE的wrap貌似有问题，这里手动触发一下。
+        editor.session.setUseWrapMode(false); // fix ACE editor text wrap issue
         editor.session.setUseWrapMode(true);
       }
     }
@@ -170,7 +149,7 @@ $(document).ready(function() {
   });
 
   // load preferences
-  var key_binding = $.cookie('key-binding');
+  var key_binding = Cookies.get('key-binding');
   if(key_binding == undefined) {
     key_binding = 'default'
   }
@@ -179,14 +158,14 @@ $(document).ready(function() {
     editor.setKeyboardHandler(ace.require("ace/keyboard/" + key_binding).handler);
   }
 
-  var font_size = $.cookie('editor-font-size');
+  var font_size = Cookies.get('editor-font-size');
   if(font_size == undefined) {
     font_size = '14';
   }
   $('select#editor-font-size').val(font_size);
   editor.setFontSize(font_size + 'px');
 
-  var editor_theme = $.cookie('editor-theme');
+  var editor_theme = Cookies.get('editor-theme');
   if(editor_theme == undefined) {
     editor_theme = 'tomorrow_night_eighties';
   }
@@ -196,7 +175,7 @@ $(document).ready(function() {
   // change preferences
   $('select#key-binding').change(function() {
     var key_binding = $(this).val();
-    $.cookie('key-binding', key_binding, { expires: 10000 });
+    Cookies.set('key-binding', key_binding, { expires: 10000 });
     if(key_binding == 'default') {
       editor.setKeyboardHandler(null);
     } else {
@@ -206,112 +185,43 @@ $(document).ready(function() {
 
   $('select#editor-font-size').change(function() {
     var font_size = $(this).val();
-    $.cookie('editor-font-size', font_size, { expires: 10000 });
+    Cookies.set('editor-font-size', font_size, { expires: 10000 });
     editor.setFontSize(font_size + 'px');
   });
 
   $('select#editor-theme').change(function() {
     var editor_theme = $(this).val();
-    $.cookie('editor-theme', editor_theme, { expires: 10000 });
+    Cookies.set('editor-theme', editor_theme, { expires: 10000 });
     editor.setTheme('ace/theme/' + editor_theme);
   });
 
-  // 编辑器的一些拓展方法
+  // extension methods for editor
   editor.selection.smartRange = function() {
     var range = editor.selection.getRange();
     if(!range.isEmpty()) {
-      return range; // 用户手动选中了一些文字，直接用这个
+      return range; // return what user selected
     }
-    // 没有选中任何东西
-    var _range = range; // 备份原始range
-    range = editor.selection.getWordRange(range.start.row, range.start.column); // 当前单词的range
-    if(editor.session.getTextRange(range).trim().length == 0) { // 选中的东西是空或者全空白
-      range = _range; // 还使用原始的range
+    // nothing was selected
+    var _range = range; // backup original range
+    range = editor.selection.getWordRange(range.start.row, range.start.column); // range for current word
+    if(editor.session.getTextRange(range).trim().length == 0) { // selected is blank
+      range = _range; // restore original range
     }
     return range;
   };
 
-  // 设置marked
-  var renderer = new marked.Renderer();
-  renderer.listitem = function(text) {
-    if(!/^\[[ x]\]\s/.test(text)) {
-      return marked.Renderer.prototype.listitem(text);
-    }
-    // 任务列表
-    var checkbox = $('<input type="checkbox" disabled/>');
-    if(/^\[x\]\s/.test(text)) { // 完成的任务列表
-      checkbox.attr('checked', true);
-    }
-    return $(marked.Renderer.prototype.listitem(text.substring(3))).addClass('task-list-item').prepend(checkbox)[0].outerHTML;
-  }
-  var mermaidError;
-  mermaid.parseError = function(err, hash){
-    mermaidError = err;
-  };
-  renderer.codespan = function(text) { // inline code
-    if(/^\$.+\$$/.test(text)) { // inline math
-      var raw = /^\$(.+)\$$/.exec(text)[1];
-      var line = raw.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); // unescape html characters
-      try{
-        return katex.renderToString(line, { displayMode: false });
-      } catch(err) {
-        return '<code>' + err + '</code>';
+  // overwrite some ACE editor keyboard shortcuts
+  editor.commands.addCommands([
+    {
+      name: "preferences",
+      bindKey: { win: "Ctrl-,", mac: "Command-," },
+      exec: function (editor) {
+        $('i.fa-cog').click(); // show M+ preferences modal
       }
     }
-    return marked.Renderer.prototype.codespan.apply(this, arguments);
-  }
-  renderer.code = function(code, language, escaped, line_number) {
-    code = code.trim();
-    var firstLine = code.split(/\n/)[0].trim();
-    if(language === 'math') { // 数学公式
-      var tex = '';
-      code.split(/\n\n/).forEach(function(line){ // 连续两个换行，则开始下一个公式
-        line = line.trim();
-        if(line.length > 0) {
-          try {
-            tex += katex.renderToString(line, { displayMode: true });
-          } catch(err) {
-            tex += '<pre>' + err + '</pre>';
-          }
-        }
-      });
-      return '<div data-line="' + line_number + '">' + tex + '</div>';
-    } else if(firstLine === 'gantt' || firstLine === 'sequenceDiagram' || firstLine.match(/^graph (?:TB|BT|RL|LR|TD);?$/)) { // mermaid
-      if(firstLine === 'sequenceDiagram') {
-        code += '\n'; // 如果末尾没有空行，则语法错误
-      }
-      if(mermaid.parse(code)) {
-        return '<div class="mermaid" data-line="' + line_number + '">' + code + '</div>';
-      } else {
-        return '<pre data-line="' + line_number + '">' + mermaidError + '</pre>';
-      }
-    } else {
-      return marked.Renderer.prototype.code.apply(this, arguments);
-    }
-  };
-  renderer.html = function(html) {
-    var result = marked.Renderer.prototype.html.apply(this, arguments);
-    var h = $(result.bold());
-    return h.html();
-  };
-  renderer.paragraph = function(text) {
-    var result = marked.Renderer.prototype.paragraph.apply(this, arguments);
-    var h = $(result.bold());
-    // h.find('script,iframe').remove();
-    return h.html();
-  };
-  marked.setOptions({
-    renderer: renderer,
-    gfm: true,
-    tables: true,
-    breaks: false,
-    pedantic: false,
-    sanitize: false,
-    smartLists: true,
-    smartypants: true
-  });
+  ]);
 
-  // 实时监听用户的编辑
+  // whenever user changes markdown...
   editor.session.on('change', function() {
     lazy_change();
   });
@@ -323,7 +233,7 @@ $(document).ready(function() {
     p.column += level + 1; // 光标位置会产生偏移
     editor.navigateTo(editor.getSelectionRange().start.row, 0); // navigateLineStart 在 wrap 的时候有问题
     editor.insert('#'.repeat(level) + ' ');
-    editor.moveCursorToPosition(p); // 恢复光标位置
+    editor.moveCursorToPosition(p); // restore cursor position
     editor.focus();
   });
 
@@ -334,7 +244,7 @@ $(document).ready(function() {
     var p = editor.getCursorPosition();
     p.column += modifier.length; // 光标位置会产生偏移
     editor.session.replace(range, modifier + editor.session.getTextRange(range) + modifier);
-    editor.moveCursorToPosition(p); // 恢复光标位置
+    editor.moveCursorToPosition(p); // restore cursor position
     editor.selection.clearSelection(); // 不知为何上一个语句会选中一部分文字
     editor.focus();
   });
@@ -342,7 +252,7 @@ $(document).ready(function() {
   // <hr/>
   $('#horizontal-rule').click(function() {
     var p = editor.getCursorPosition();
-    if(p.column == 0) { // 光标在行首
+    if(p.column == 0) { // cursor is at line start
       editor.selection.clearSelection();
       editor.insert('\n---\n');
     } else {
@@ -362,7 +272,7 @@ $(document).ready(function() {
       editor.gotoLine(i);
       editor.insert(prefix);
     }
-    editor.moveCursorToPosition(p); // 恢复光标位置
+    editor.moveCursorToPosition(p); // restore cursor position
     editor.focus();
   });
 
@@ -397,9 +307,9 @@ $(document).ready(function() {
 
   $('#table-icon').click(function() {
     var sample = $(this).data('sample');
-    editor.insert(''); // 删除选中的部分
+    editor.insert(''); // delete selected
     var p = editor.getCursorPosition();
-    if(p.column == 0) { // 光标在行首
+    if(p.column == 0) { // cursor is at line start
       editor.selection.clearSelection();
       editor.insert('\n' + sample + '\n\n');
     } else {
@@ -450,38 +360,4 @@ $(document).ready(function() {
     editor.insert('\n```\n' + text + '\n```\n');
     editor.focus();
   });
-
-  // modals
-  $(document).on('close', '.remodal', function(e) {
-    editor.focus(); // 关闭modal，编辑器自动获得焦点
-  });
-
-  // overwrite some ACE editor keyboard shortcuts
-  editor.commands.addCommands([
-    {
-      name: "preferences",
-      bindKey: { win: "Ctrl-,", mac: "Command-," },
-      exec: function (editor) {
-        $('i.fa-cog').click(); // show M+ preferences modal
-      }
-    }
-  ]);
 });
-
-function prompt_for_a_value(key, action) {
-  $(document).on('opened', '#' + key + '-modal', function() {
-    $('#' + key + '-code').focus();
-  });
-  $('#' + key + '-code').keyup(function(e) {
-   if(e.which == 13) { // 回车键确认
-      $('#' + key + '-confirm').click();
-    }
-  });
-  $(document).on('confirm', '#' + key + '-modal', function() {
-    var value = $('#' + key + '-code').val().trim();
-    if(value.length > 0) {
-      action(value);
-      $('#' + key + '-code').val('');
-    }
-  });
-}

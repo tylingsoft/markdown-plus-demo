@@ -1,0 +1,23 @@
+{
+  "name": "markdown-it-icons",
+  "main": "markdown-it-icons.js",
+  "homepage": "https://github.com/tylingsoft/markdown-it-icons",
+  "authors": [
+    "Tyler Long <tyler4long@gmail.com>"
+  ],
+  "description": "Emoji icons, Font Awesome icons and Ionicons icons for markdown-it.",
+  "keywords": [
+    "markdown-it",
+    "emoji",
+    "icons"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "fabfile.py"
+  ]
+}

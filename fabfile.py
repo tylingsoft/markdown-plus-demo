@@ -2,9 +2,9 @@ from fabric.api import local
 
 
 def update():
-    local('rm -rf bower_components')
+    local('rm -rf vendor')
     local('bower cache clean')
     local('bower update')
-    local('rm bower_components/markdown-plus/bower.json')
-    local('mv bower_components/markdown-plus/* .')
-    local('rm -rf bower_components/markdown-plus')
+    local('rm vendor/markdown-plus/bower.json')
+    local('mv vendor/markdown-plus/* .')
+    local('rm -rf vendor/markdown-plus')

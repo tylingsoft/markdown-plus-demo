@@ -1,0 +1,37 @@
+{
+  "name": "markdown-it-deflist",
+  "main": "dist/markdown-it-deflist.js",
+  "homepage": "https://github.com/markdown-it/markdown-it-deflist",
+  "description": "<dl> tag for markdown-it markdown parser.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "definition list"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "benchmark",
+    "bower_components",
+    "coverage",
+    "demo",
+    "docs",
+    "lib",
+    "node_modules",
+    "support",
+    "test",
+    "Makefile",
+    "index*"
+  ],
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0",
+    "commit": "f68a7bd0601c2af7f9cce4fe48bbf13774595d2a"
+  },
+  "_source": "git://github.com/markdown-it/markdown-it-deflist.git",
+  "_target": "*",
+  "_originalSource": "markdown-it-deflist"
+}

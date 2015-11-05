@@ -1,0 +1,37 @@
+{
+  "name": "markdown-it-mark",
+  "main": "dist/markdown-it-mark.js",
+  "homepage": "https://github.com/markdown-it/markdown-it-mark",
+  "description": "<mark> tag for markdown-it markdown parser.",
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "mark"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "benchmark",
+    "bower_components",
+    "coverage",
+    "demo",
+    "docs",
+    "lib",
+    "node_modules",
+    "support",
+    "test",
+    "Makefile",
+    "index*"
+  ],
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0",
+    "commit": "00a122a726d91316fab66a452b495d3b14cf1615"
+  },
+  "_source": "git://github.com/markdown-it/markdown-it-mark.git",
+  "_target": "*",
+  "_originalSource": "markdown-it-mark"
+}
