@@ -1,7 +1,7 @@
 # Markdown Plus
 
 ![Markdown Plus](http://mdp.tylingsoft.com/icon.png)  
-Markdown Plus ("M+" or "mdp" for short) is a versatile markdown editor. Besides CommonMark, GitHub flavored markdown, it also supports footnotes, task lists, emojis, Font Awesome, Ionicons, mathematical formulae, flowcharts, sequence diagrams, gantt diagrams, Vim mode and Emacs mode.
+Markdown Plus ("M+" or "mdp" for short) is a versatile markdown editor. Besides CommonMark, GitHub flavored markdown, it also supports footnote, task list, emoji, Font Awesome, Ionicons, mathematical formula, flowchart, sequence diagram, gantt diagram, Vim mode and Emacs mode.
 
 
 #### Fork me on GitHub: :fa-github: [tylingsoft/markdown-plus](https://github.com/tylingsoft/markdown-plus).
@@ -11,6 +11,32 @@ Markdown Plus ("M+" or "mdp" for short) is a versatile markdown editor. Besides 
 
 
 ---
+
+
+## Mastering Markdown
+
+Markdown allows you to write using an easy-to-read, easy-to-write plain text format, which then converts to valid HTML for viewing.
+
+[Mastering Markdown Guide](https://guides.github.com/features/mastering-markdown/).
+
+
+## ~~strikethrough~~
+
+
+## ++insert++
+
+
+## ==mark==
+
+
+## Subscript: H~2~O
+
+You can also use inline math: `$H_2O$`
+
+
+## Superscript: 29^th^
+
+You can also use inline math: `$29^{th}$`
 
 
 ## Emoji: :panda_face: :sparkles: :camel: :boom: :pig:
@@ -28,10 +54,9 @@ Markdown Plus ("M+" or "mdp" for short) is a versatile markdown editor. Besides 
 [All the Ionicons icons](http://ionicons.com/)
 
 
-
 ## `print 'hello code'`
 
-    [1, 2, 3, 4, 5].collect do |item|
+    evens = [1, 2, 3, 4, 5].collect do |item|
       item * 2
     end
 
@@ -43,8 +68,25 @@ $(document).ready(function() {
 });
 ```
 
+[Code Formatting](https://help.github.com/articles/markdown-basics/#code-formatting)
 
-## Task lists
+
+## Tables and alignment
+
+First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+| :------------ |:---------------:| -----:|
+| col 3 is      | some wordy text | $1600 |
+| col 2 is      | centered        |   $12 |
+
+[Table Syntax](https://help.github.com/articles/github-flavored-markdown/#tables)
+
+
+## Task list
 
 - [ ] a bigger project
   - [x] first subtask
@@ -53,6 +95,16 @@ $(document).ready(function() {
 - [ ] a separate task
 
 [Task Lists Syntax](https://help.github.com/articles/writing-on-github/#task-lists)
+
+
+## Abbreviation
+
+Markup is based on [php markdown extra](https://michelf.ca/projects/php-markdown/extra/#abbr) definition, but without multiline support:
+
+*[HTML]: Hyper Text Markup Language
+*[W3C]:  World Wide Web Consortium
+The HTML specification
+is maintained by the W3C.
 
 
 ## Footnote
@@ -74,22 +126,7 @@ note.]
 [Footnote Syntax](http://pandoc.org/README.html#footnotes)
 
 
-## Tables and alignment
-
-Function name | Description
-------------- | -----------
-`help()`      | Display the help window.
-`destroy()`   | **Destroy your computer!**
-
-| Left-Aligned  | Center Aligned  | Right Aligned |
-| :------------ |:---------------:| -----:|
-| col 3 is      | some wordy text | $1600 |
-| col 2 is      | centered        |   $12 |
-
-[Table Syntax](https://help.github.com/articles/github-flavored-markdown/#tables)
-
-
-## Mathematical formulae `$y = x^2$`
+## Mathematical formula `$y = x^2$`
 
 Inline math: `$\dfrac{ \tfrac{1}{2}[1-(\tfrac{1}{2})^n] }{ 1-\tfrac{1}{2} } = s_n$`.
 
@@ -112,18 +149,18 @@ Math block:
  \left[R^2\frac{\partial D_n(R)}{\partial R}\right]\,dR
 ```
 
-[Mathematical Formulae Syntax](http://meta.wikimedia.org/wiki/Help:Displaying_a_formula)
+[Mathematical Formula Syntax](http://meta.wikimedia.org/wiki/Help:Displaying_a_formula)
 
 
 ## Flowchart
 
 ```
 graph TD
-    A[Christmas] -->|get money| B(go shopping)
-    B --> C{fa:fa-spinner let me think}
+    A[Christmas] -->|Get money| B(Go shopping)
+    B --> C{fa:fa-spinner Let me think}
     C -->|One| D[Laptop: fa:fa-laptop]
-    C -->|Two| E[iphone: fa:fa-mobile]
-    C -->|Three| F[car: fa:fa-car]
+    C -->|Two| E[iPhone: fa:fa-mobile]
+    C -->|Three| F[Car: fa:fa-car]
 ```
 
 [Flowchart Syntax](http://knsv.github.io/mermaid/#flowcharts-basic-syntax)
@@ -177,13 +214,23 @@ gantt
 [Gantt Diagram Syntax](http://knsv.github.io/mermaid/#gant-diagrams)
 
 
-## Subscript: H~2~O
+## Custom Container
+
+Markup is similar to fenced code blocks. Valid container types are `success`, `info`, `warning` and `danger`.
+
+::: success
+Congratulations!
+
+You have done something successfully!
+:::
+
+::: warning
+Your card will be expired in 30 days, please renew as soon as possible.
+:::
 
 
-## Superscript: 29^th^
+## HTML
 
+If you find the markdown syntax too limited, you can try some <span style="color: blue;">HTML<span>:
 
-## ++insert++
-
-
-## ==mark==
+<p style="text-align:center;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/120px-HTML5_logo_and_wordmark.svg.png"/></p>
