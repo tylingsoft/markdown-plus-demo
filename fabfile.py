@@ -7,4 +7,4 @@ def update():
     local('bower update')
     local('rm vendor/markdown-plus/bower.json')
     local('mv vendor/markdown-plus/* .')
-    local('rm -rf vendor/markdown-plus')
+    local('rm -rf vendor')

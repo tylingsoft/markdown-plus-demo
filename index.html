@@ -5,27 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Markdown Plus</title>
     <link href="icon.png" rel="shortcut icon" type="image/png"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.ui/1.11.4/jquery-ui.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.layout/1.4.3/layout-default.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/remodal/1.0.5/remodal.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/remodal/1.0.5/remodal-default-theme.css"/>
-    <link rel="stylesheet" href="vendor/markdown-core/dist/css/markdown-core.css">
-    <link rel="stylesheet" href="markdown-plus.css"/>
-    <script src="https://cdn.jsdelivr.net/underscorejs/1.8.3/underscore-min.js"></script>
-    <script src="vendor/markdown-core/dist/markdown-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.ui/1.11.4/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.layout/1.4.3/jquery.layout.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/js-cookie/2.0.4/js.cookie.js"></script>
-    <script src="https://cdn.jsdelivr.net/ace/1.2.1/noconflict/ace.js" charset="utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/ace/1.2.1/noconflict/keybinding-vim.js"></script>
-    <script src="https://cdn.jsdelivr.net/ace/1.2.1/noconflict/keybinding-emacs.js"></script>
-    <script src="https://cdn.jsdelivr.net/remodal/1.0.5/remodal.min.js"></script>
-    <script src="markdown-plus.js"></script>
+    <link rel="stylesheet" href="dist/css/markdown-plus.css"/>
+    <script src="dist/markdown-plus.min.js" charset="utf-8"></script>
     <script src="index.js"></script>
   </head>
   <body>
     <div class="ui-layout-north">
-      <div id="toolbar" class="noselect" data-open-title="Hide Toolbar" data-closed-title="Show Toolbar"> <!-- 工具栏 -->
+      <div id="toolbar" class="noselect" data-open-title="Hide Toolbar" data-closed-title="Show Toolbar">
         <i title="New" class="fa fa-file-text-o file-icon app-only" data-name="new"></i>
         <i title="Open" class="fa fa-folder-open-o file-icon app-only" data-name="open"></i>
         <i title="Save" class="fa fa-save file-icon app-only" data-name="save"></i>
@@ -65,7 +51,7 @@ row 2 col 1 | row 2 col 2"></i>
         <i title="Font Awesome" class="fa fa-flag-o" data-remodal-target="fa-modal"></i>
         <i title="Ionicons" class="icon ion-ionic" data-remodal-target="ion-modal"></i>
         <i class="dividor">|</i>
-        <i title="Mathematical formulae" class="fa fa-superscript" id="math-icon" data-sample="E = mc^2"></i>
+        <i title="Mathematical formula" class="fa fa-superscript" id="math-icon" data-sample="E = mc^2"></i>
         <i title="Flowchart" class="fa fa-long-arrow-right mermaid-icon" data-sample="graph LR
 A-->B"></i>
         <i title="Sequence diagram" class="fa fa-exchange mermaid-icon" data-sample="sequenceDiagram
@@ -138,14 +124,14 @@ T3: 2014-01-02, 9d"></i>
       <div class="remodal" data-remodal-id="help-modal"> <!-- help 弹出框 -->
         <img src="icon.png" width="64"/>
         <h2>Markdown Plus help</h2>
-        <h3><a href="http://mdp.tylingsoft.com/" target="_blank">An online sample</a></h3>
+        <p><a href="http://mdp.tylingsoft.com/" target="_blank">Online Sample</a></p>
         <p><a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank">Keyboard Shortcuts</a></p>
         <p><a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown Basics</a></p>
         <p><a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">GitHub Flavored Markdown</a></p>
         <p><a href="http://www.emoji-cheat-sheet.com/" target="_blank">Emoji Cheat Sheet</a></p>
         <p><a href="http://fontawesome.io/icons/" target="_blank">Font Awesome Icons</a></p>
         <p><a href="http://ionicons.com/" target="_blank">Ionicons Website</a></p>
-        <p><a href="http://meta.wikimedia.org/wiki/Help:Displaying_a_formula" target="_blank">Mathematical Formulae</a></p>
+        <p><a href="http://meta.wikimedia.org/wiki/Help:Displaying_a_formula" target="_blank">Mathematical Formula</a></p>
         <p><a href="http://knsv.github.io/mermaid/#flowcharts-basic-syntax" target="_blank">Flowchart Syntax</a></p>
         <p><a href="http://knsv.github.io/mermaid/#sequence-diagrams" target="_blank">Sequence Diagram Syntax</a></p>
         <p><a href="http://knsv.github.io/mermaid/#gant-diagrams" target="_blank">Gantt Diagram Syntax</a></p>
