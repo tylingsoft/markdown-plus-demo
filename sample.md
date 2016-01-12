@@ -12,7 +12,9 @@ Markdown Plus ("M+" or "mdp" for short) is a versatile markdown editor. Besides 
 
 #### Buy Windows App: :fa-windows: [https://gum.co/mdp-win](https://gum.co/mdp-win)
 
-**Email Support**: We provide email support to those who have purchased the apps: service@tylingsoft.com
+::: success
+We provide email support to those who have purchased the apps: ==service@tylingsoft.com==
+:::
 
 ---
 
@@ -175,7 +177,9 @@ graph TD
 
 [Flowchart Syntax](http://knsv.github.io/mermaid/#flowcharts-basic-syntax)
 
-==Note==: Adding many flowcharts will slow down the editor.
+::: warning
+Adding many flowcharts will slow down the editor.
+:::
 
 
 ## Sequence diagram
@@ -190,7 +194,9 @@ sequenceDiagram
 
 [Sequence Diagram Syntax](http://knsv.github.io/mermaid/#sequence-diagrams)
 
-==Note==: Adding many sequence diagrams will slow down the editor.
+::: warning
+Adding many sequence diagrams will slow down the editor.
+:::
 
 
 ## Gantt diagram
@@ -227,7 +233,9 @@ gantt
 
 [Gantt Diagram Syntax](http://knsv.github.io/mermaid/#gant-diagrams)
 
-==Note==: Adding many gantt diagrams will slow down the editor.
+::: warning
+Adding many gantt diagrams will slow down the editor.
+:::
 
 
 ## Custom Container
@@ -262,3 +270,5 @@ Term 2
 If you find the markdown syntax too limited, you can try some <span style="color: blue;">HTML<span>:
 
 <p style="text-align:center;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/120px-HTML5_logo_and_wordmark.svg.png"/></p>
+
+<a href="https://github.com/tylingsoft/markdown-plus" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0; width: 149px; height: 149px;" src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-green@2x.png" alt="Fork me on GitHub"></a>
