@@ -59,8 +59,9 @@ T2: 2014-01-11, 9d
 section S3
 T3: 2014-01-02, 9d"></i>
         <i class="dividor">|</i>
-        <i title="Toggle toolbar" class="fa fa-arrows-v toggle-icon" data-direction="north"></i>
-        <i title="Toggle preview" class="fa fa-arrows-h toggle-icon" data-direction="east"></i>
+        <i title="Hide toolbar" class="fa fa-long-arrow-up" id="toggle-toolbar"></i>
+        <i title="Toggle editor" class="fa fa-long-arrow-left" id="toggle-editor"></i>
+        <i title="Toggle preview" class="fa fa-long-arrow-right" id="toggle-preview"></i>
         <i class="dividor">|</i>
         <i title="Preferences" class="fa fa-cog" data-remodal-target="preferences-modal"></i>
         <i title="Help" class="fa fa-question-circle" data-remodal-target="help-modal"></i>
@@ -100,9 +101,12 @@ T3: 2014-01-02, 9d"></i>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select></p>
-        <p>Show preview: <select id="show-preview">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
+        <p>Editor : Preview <select id="editor-versus-preview">
+          <option value="100%">0 : 1</option>
+          <option value="66.6%">1 : 2</option>
+          <option value="50%">1 : 1</option>
+          <option value="33.3%">2 : 1</option>
+          <option value="1">1 : 0</option>
         </select></p>
         <p>Editor theme: <select id="editor-theme">
           <option value="tomorrow_night_blue">Blue</option>
@@ -122,7 +126,15 @@ T3: 2014-01-02, 9d"></i>
           <option value="vim">Vim</option>
         </select></p>
         <p>Gantt diagram axis format: <input id="gantt-axis-format" placeholder="%Y-%m-%d"/>
-            <br/><a href="https://github.com/mbostock/d3/wiki/Time-Formatting" target="_blank">Time formatting reference</a></p>
+          <br/><a href="https://github.com/mbostock/d3/wiki/Time-Formatting" target="_blank">Time formatting reference</a></p>
+        <p>Custom CSS files: <textarea id="custom-css-files" wrap="off" placeholder="https://cdn.example.com/file1.css
+https://cdn.example.com/file2.css"></textarea>
+          <br/><span class="hint">(You need to restart the editor to apply the CSS files)</span>
+          <br/><a href="https://github.com/tylingsoft/markdown-plus-themes" target="_blank">Markdown Plus themes</a></p>
+        <p>Custom JS files: <textarea id="custom-js-files" wrap="off" placeholder="https://cdn.example.com/file1.js
+https://cdn.example.com/file2.js"></textarea>
+          <br/><span class="hint">(You need to restart the editor to apply the JS files)</span>
+          <br/><a href="https://github.com/tylingsoft/markdown-plus-plugins" target="_blank">Markdown Plus plugins</a></p>
         <br/><a data-remodal-action="confirm" class="remodal-confirm">OK</a>
       </div>
       <div class="remodal" data-remodal-id="help-modal"> <!-- help modal -->
