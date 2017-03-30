@@ -67,11 +67,6 @@ You can also use inline math: `$29^{th}$`
 [All the Font Awesome icons](http://fontawesome.io/icons/)
 
 
-## Ionicons: :ion-printer: :ion-social-tux: :ion-lock-combination: :ion-ios-medkit: :ion-coffee:
-
-[All the Ionicons icons](http://ionicons.com/)
-
-
 ## `print 'hello code'`
 
     evens = [1, 2, 3, 4, 5].collect do |item|
@@ -79,8 +74,8 @@ You can also use inline math: `$29^{th}$`
     end
 
 ```javascript
-$(document).ready(function() {
-  $('pre code').each(function(i, block) {
+$(document).ready(() => {
+  $('pre code').each((i, block) => {
     hljs.highlightBlock(block);
   });
 });
@@ -232,7 +227,7 @@ Adding many sequence diagrams will slow down the editor.
 ```mermaid
 gantt
     dateFormat  YYYY-MM-DD
-    title Adding GANTT diagram functionality to mermaid
+    title Adding GANTT diagram to mermaid
 
     section A section
     Completed task            :done,    des1, 2014-01-06,2014-01-08
