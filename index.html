@@ -11,20 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/mermaid/6.0.0/mermaid.css">
-    <script src="https://cdn.jsdelivr.net/mermaid/6.0.0/mermaid.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/keybinding-vim.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/keybinding-emacs.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-markdown.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-searchbox.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-tomorrow_night_eighties.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-tomorrow_night_blue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-tomorrow.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-kuroir.js"></script>
-    <script src="index.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.layout/1.4.3/jquery.layout.min.js"></script>
   </head>
   <body>
     <div id="mdp-container" style="height: 99%;">
@@ -86,7 +72,7 @@ T3: 2014-01-02, 9d"></i>
         </div>
       </div>
       <div class="ui-layout-center">
-        <div id="editor"></div> <!-- editor -->
+        <textarea id="editor"></textarea> <!-- editor -->
         <div class="remodal" id="emoji-modal" data-remodal-id="emoji-modal"> <!-- emoji modal -->
           <h2>Please enter an emoji code:</h2>
           <p>Examples: "smile", "whale", "santa", "panda_face", "dog", "truck" ...</p>
@@ -118,10 +104,55 @@ T3: 2014-01-02, 9d"></i>
             <option value="1">1 : 0</option>
           </select></p>
           <p>Editor theme: <select id="editor-theme">
-            <option value="tomorrow_night_blue">Blue</option>
-            <option value="tomorrow">Bright</option>
-            <option value="tomorrow_night_eighties">Dark</option>
-            <option value="kuroir">Gray</option>
+            <option value="3024-day">3024-day</option>
+            <option value="3024-night">3024-night</option>
+            <option value="abcdef">abcdef</option>
+            <option value="ambiance-mobile">ambiance-mobile</option>
+            <option value="ambiance">ambiance</option>
+            <option value="base16-dark">base16-dark</option>
+            <option value="base16-light">base16-light</option>
+            <option value="bespin">bespin</option>
+            <option value="blackboard">blackboard</option>
+            <option value="cobalt">cobalt</option>
+            <option value="colorforth">colorforth</option>
+            <option value="default">default</option>
+            <option value="dracula">dracula</option>
+            <option value="duotone-dark">duotone-dark</option>
+            <option value="duotone-light">duotone-light</option>
+            <option value="eclipse">eclipse</option>
+            <option value="elegant">elegant</option>
+            <option value="erlang-dark">erlang-dark</option>
+            <option value="hopscotch">hopscotch</option>
+            <option value="icecoder">icecoder</option>
+            <option value="isotope">isotope</option>
+            <option value="lesser-dark">lesser-dark</option>
+            <option value="liquibyte">liquibyte</option>
+            <option value="material">material</option>
+            <option value="mbo">mbo</option>
+            <option value="mdn-like">mdn-like</option>
+            <option value="midnight">midnight</option>
+            <option value="monokai">monokai</option>
+            <option value="neat">neat</option>
+            <option value="neo">neo</option>
+            <option value="night">night</option>
+            <option value="panda-syntax">panda-syntax</option>
+            <option value="paraiso-dark">paraiso-dark</option>
+            <option value="paraiso-light">paraiso-light</option>
+            <option value="pastel-on-dark">pastel-on-dark</option>
+            <option value="railscasts">railscasts</option>
+            <option value="rubyblue">rubyblue</option>
+            <option value="seti">seti</option>
+            <option value="solarized">solarized</option>
+            <option value="the-matrix">the-matrix</option>
+            <option value="tomorrow-night-bright">tomorrow-night-bright</option>
+            <option value="tomorrow-night-eighties">tomorrow-night-eighties</option>
+            <option value="ttcn">ttcn</option>
+            <option value="twilight">twilight</option>
+            <option value="vibrant-ink">vibrant-ink</option>
+            <option value="xq-dark">xq-dark</option>
+            <option value="xq-light">xq-light</option>
+            <option value="yeti">yeti</option>
+            <option value="zenburn">zenburn</option>
           </select></p>
           <p>Editor font size: <select id="editor-font-size">
             <option value="8">8px</option><option value="9">9px</option><option value="10">10px</option><option value="11">11px</option>
@@ -131,8 +162,9 @@ T3: 2014-01-02, 9d"></i>
           </select></p>
           <p>Key binding: <select id="key-binding">
             <option value="default">Default</option>
-            <option value="emacs">Emacs</option>
+            <option value="sublime">Sublime</option>
             <option value="vim">Vim</option>
+            <option value="emacs">Emacs</option>
           </select></p>
           <p>Gantt diagram axis format: <input id="gantt-axis-format" placeholder="%Y-%m-%d"/>
             <br/><a href="https://github.com/mbostock/d3/wiki/Time-Formatting" target="_blank">Time formatting reference</a></p>
@@ -148,7 +180,6 @@ T3: 2014-01-02, 9d"></i>
           <img src="icon.png" width="64"/>
           <h2>Markdown Plus help</h2>
           <p><a href="http://mdp.tylingsoft.com/" target="_blank">Online Sample</a></p>
-          <p><a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts" target="_blank">Keyboard Shortcuts</a></p>
           <p><a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Markdown Basics</a></p>
           <p><a href="https://help.github.com/articles/github-flavored-markdown/" target="_blank">GitHub Flavored Markdown</a></p>
           <p>If none of the above solves your problem, please <a target="_blank" href="http://tylingsoft.com/contact/">contact us</a>.</p>
@@ -167,5 +198,10 @@ T3: 2014-01-02, 9d"></i>
         <article class="markdown-body" id="preview"></article>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/mermaid/6.0.0/mermaid.min.js"></script>
+    <script src="index.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.layout/1.4.3/jquery.layout.min.js"></script>
   </body>
 </html>
